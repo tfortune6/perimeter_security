@@ -1,0 +1,20 @@
+# 1. 忽略虚拟环境
+venv/
+.venv/
+
+# 2. 忽略 Python 缓存
+__pycache__/
+*.pyc
+
+# 3. 忽略 IDE 配置
+.vscode/
+.idea/
+
+# 4. 【关键修正】忽略根目录下的 static/uploads 里的所有文件
+static/uploads/*
+
+# 5. 【关键修正】但是保留 .gitkeep 文件（防止空文件夹被 Git 丢弃）
+!static/uploads/.gitkeep
+
+# 6. 忽略环境变量
+.env

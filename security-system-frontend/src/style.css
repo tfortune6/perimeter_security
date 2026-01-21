@@ -1,0 +1,73 @@
+:root {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+    "Segoe UI Emoji";
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: dark;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --selection-bg: rgba(19, 127, 236, 0.55);
+  --selection-color: #ffffff;
+
+  --table-hover-bg: #1e293b;
+  --table-active-bg: #283043;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #101922;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+#app {
+  height: 100%;
+}
+
+::selection {
+  background: var(--selection-bg);
+  color: var(--selection-color);
+}
+
+::-moz-selection {
+  background: var(--selection-bg);
+  color: var(--selection-color);
+}
+
+/* Element Plus 表格：hover/当前行/选中行 背景适配深色主题 */
+.el-table__body tr:hover > td {
+  background: var(--table-hover-bg) !important;
+}
+
+.el-table__body tr.current-row > td {
+  background: var(--table-active-bg) !important;
+}
+
+.el-table__body tr.el-table__row--selected > td {
+  background: var(--table-active-bg) !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #101922;
+  }
+
+::-webkit-scrollbar-thumb {
+  background: #2a3642;
+  border-radius: 3px;
+  }
+
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}
