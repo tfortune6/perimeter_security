@@ -11,7 +11,7 @@ const loading = ref(false)
 
 const form = reactive({
   username: 'admin',
-  password: 'admin',
+  password: '123456',
 })
 
 const rules = {
@@ -26,8 +26,11 @@ const onSubmit = async () => {
 
   loading.value = true
   try {
-    const { token } = await login(form.username, form.password)
-    localStorage.setItem('token', token)
+    const { access_token } = await login(form.username, form.password)
+
+    // 恢复前端原有约定：token 存在 localStorage.token
+    localStorage.setItem('token', access_token)
+
     ElMessage.success('登录成功')
 
     const redirect = route.query.redirect
@@ -44,7 +47,7 @@ const onSubmit = async () => {
   <div class="page">
     <div class="card">
       <div class="title">智能周界安全平台</div>
-      <div class="sub">前端演示版（Mock API）</div>
+      <div class="sub">原型演示版（真实登录 + Mock 展示）</div>
 
       <el-form ref="formRef" :model="form" :rules="rules" label-position="top" class="form" @submit.prevent>
         <el-form-item label="用户名" prop="username">
@@ -56,7 +59,7 @@ const onSubmit = async () => {
 
         <el-button type="primary" size="large" class="btn" :loading="loading" @click="onSubmit">登录</el-button>
 
-        <div class="tip">演示账号：admin / admin</div>
+        <div class="tip">演示账号：admin / 123456</div>
       </el-form>
     </div>
   </div>

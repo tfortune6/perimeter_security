@@ -84,3 +84,12 @@ class ZoneConfig(SQLModel, table=True):
         back_populates="zones",
         sa_relationship=relationship("VideoSource", back_populates="zones"),
     )
+
+
+# 新增 User 模型
+class User(SQLModel, table=True):
+    __tablename__ = "users"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    username: str = Field(index=True, unique=True)
+    password_hash: str

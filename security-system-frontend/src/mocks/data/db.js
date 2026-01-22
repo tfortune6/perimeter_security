@@ -121,6 +121,7 @@ const genVideos = (count = 30) => {
 }
 
 const state = {
+  // 仅用于 mock 鉴权对比：我们改为只要有 Bearer token 即视为已登录
   token: 'demo-token',
   user: {
     id: 'u_admin',
@@ -172,14 +173,16 @@ const state = {
 // 让“视频源/通道”与已上传视频保持一致（使用视频 id，显示视频 name）
 state.sources = state.videos.map((v) => ({ id: v.id, name: v.name }))
 
-
 export const db = state
 
 export const auth = {
   requireAuth(request) {
     const h = request.headers.get('authorization') || request.headers.get('Authorization')
     const token = h?.replace(/^Bearer\s+/i, '')
-    return token === db.token
+
+    // 混合模式：登录走真实后端，token 会是 JWT，不等于 mock 的 demo-token。
+    // 为了让 mock 业务继续工作，这里只要存在 Bearer token 就认为已登录。
+    return Boolean(token)
   },
 }
 

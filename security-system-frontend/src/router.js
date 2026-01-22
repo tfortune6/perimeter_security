@@ -41,6 +41,7 @@ router.beforeEach((to, from, next) => {
     return
   }
 
+  // 恢复前端原有约定：token 存在 localStorage.token
   const token = localStorage.getItem('token')
   if (!token) {
     next({ path: '/login', query: { redirect: to.fullPath } })

@@ -18,7 +18,6 @@ sync_engine = create_engine(
 )
 
 # 异步引擎（用于异步操作）
-# 异步引擎（用于异步操作）
 # 注意：settings.DATABASE_URL 形如 "postgresql+psycopg://..."
 # 异步驱动应使用 "postgresql+asyncpg://..."（而不是 "postgresql+asyncpgpsycopg://..."）
 async_engine = create_async_engine(
@@ -28,7 +27,8 @@ async_engine = create_async_engine(
     pool_recycle=3600,
 )
 
-# 同步会话工厂
+# 同步会话工厂（SQLAlchemy Session）。
+# 注意：sqlmodel.Session 才有 exec()；所以我们提供一个额外的 get_sqlmodel_db() 依赖。
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=sync_engine)
 
 # 异步会话工厂
@@ -40,13 +40,21 @@ AsyncSessionLocal = sessionmaker(
     autocommit=False,
 )
 
-# 依赖项：获取同步会话
-def get_db() -> Session:
+
+# 依赖项：获取 SQLAlchemy Session（兼容旧代码）
+def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
+
+
+# 依赖项：获取 SQLModel Session（支持 db.exec / db.exec(stmt)）
+def get_sqlmodel_db() -> Session:
+    with Session(sync_engine) as session:
+        yield session
+
 
 # 依赖项：获取异步会话
 async def get_async_db() -> AsyncGenerator[AsyncSession, None]:
@@ -56,14 +64,17 @@ async def get_async_db() -> AsyncGenerator[AsyncSession, None]:
         finally:
             await session.close()
 
+
 # 创建数据库表（同步）
 def create_db_and_tables():
-    from app.models import VideoSource, AlarmEvent, ZoneConfig  # 避免循环导入
+    from app.models import VideoSource, AlarmEvent, ZoneConfig, User  # 避免循环导入
     SQLModel.metadata.create_all(sync_engine)
+
 
 # 删除数据库表（开发用）
 def drop_all_tables():
     SQLModel.metadata.drop_all(sync_engine)
+
 
 # 初始化数据库（创建表）
 def init_db():
