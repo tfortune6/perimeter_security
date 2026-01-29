@@ -15,6 +15,7 @@ const route = useRoute()
 const router = useRouter()
 
 const clock = ref('')
+const dateText = ref('')
 let timer = null
 
 const active = computed(() => route.path)
@@ -26,9 +27,12 @@ const menu = [
   { path: '/sources', label: '视频源管理', icon: Camera },
 ]
 
+const pad2 = (n) => String(n).padStart(2, '0')
+
 const updateClock = () => {
   const d = new Date()
   clock.value = d.toLocaleTimeString()
+  dateText.value = `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`
 }
 
 onMounted(() => {
@@ -75,7 +79,7 @@ const logout = async () => {
           <span class="clock-ico">⏱</span>
           <span class="clock-text">{{ clock }}</span>
           <span class="clock-sep">|</span>
-          <span class="clock-date">2023-10-27</span>
+          <span class="clock-date">{{ dateText }}</span>
         </div>
 
         <div class="user" @click="logout">

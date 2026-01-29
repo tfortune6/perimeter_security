@@ -36,15 +36,6 @@ const genLiveEvents = (limit = 8) => {
   return items
 }
 
-const ensureDemoUnique = () => {
-  if (!db.videos.length) return
-  const demoCount = db.videos.filter((x) => x.isDemo).length
-  if (demoCount !== 1) {
-    db.videos.forEach((x) => (x.isDemo = false))
-    db.videos[0].isDemo = true
-  }
-}
-
 const ensureZoneList = (sourceId) => {
   if (!db.zonesBySource[sourceId]) db.zonesBySource[sourceId] = []
   return db.zonesBySource[sourceId]
@@ -62,17 +53,8 @@ const findZoneById = (zoneId) => {
 }
 
 export const handlers = [
-  http.post('/api/login', async ({ request }) => {
-    const body = await request.json().catch(() => ({}))
-    const { username, password } = body || {}
-
-    await sleep(300)
-
-    if (username === 'admin' && password === 'admin') {
-      return ok({ token: db.token })
-    }
-    return fail(1001, '用户名或密码错误')
-  }),
+  // 注意: /api/token, /api/videos, /api/videos/upload, /api/videos/:id/* 等接口
+  // 不在这里注册 handler，它们将通过 onUnhandledRequest: 'bypass' 自动穿透到真实后端。
 
   http.get('/api/me', async ({ request }) => {
     await sleep(200)
@@ -246,85 +228,16 @@ export const handlers = [
     return ok(alarm)
   }),
 
-  http.get('/api/videos', async ({ request }) => {
-    await sleep(250)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-
-    ensureDemoUnique()
-
-    const url = parseUrl(request)
-    const keyword = (url.searchParams.get('keyword') || '').trim().toLowerCase()
-
-    let items = [...db.videos]
-    if (keyword) items = items.filter((x) => x.name.toLowerCase().includes(keyword))
-
-    return ok(items)
-  }),
-
+  // 仪表盘仍然需要 mock 的 /api/videos/demo 接口
   http.get('/api/videos/demo', async ({ request }) => {
     await sleep(180)
     if (!auth.requireAuth(request)) return fail(401, '未登录')
 
-    ensureDemoUnique()
-    const demo = db.videos.find((x) => x.isDemo) || null
-    return ok(demo)
-  }),
-
-  http.post('/api/videos/upload', async ({ request }) => {
-    await sleep(450)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-
-    const id = `vid-${Math.random().toString(16).slice(2, 8)}`
-    const name = `upload_${Date.now()}.mp4`
-
-    const row = {
-      id,
-      name,
-      ext: 'MP4',
-      quality: rand.pick(['720p', '1080p', '2K', '4K HDR']),
-      size: rand.fmtSize(rand.rnd(20, 800)),
-      duration: rand.fmtDuration(rand.rnd(10, 60 * 10)),
-      uploadAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
-      isDemo: false,
-      previewUrl: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4',
-    }
-
-    db.videos.unshift(row)
-
-    // 同步到“视频源列表”，保证仪表盘/配置中心可立即看到新视频
-    db.sources = db.videos.map((v) => ({ id: v.id, name: v.name }))
-
-    // 为新视频初始化区域与 overlay 容器
-    if (!db.zonesBySource[id]) db.zonesBySource[id] = []
-    if (!db.dashboard.overlaysBySource[id]) db.dashboard.overlaysBySource[id] = { boxes: [] }
-
-    return ok(row)
-  }),
-
-  http.post('/api/videos/:id/set-demo', async ({ request, params }) => {
-    await sleep(250)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-
-    const { id } = params
-    const idx = db.videos.findIndex((x) => x.id === id)
-    if (idx < 0) return fail(404, '视频不存在')
-
-    db.videos.forEach((x) => (x.isDemo = false))
-    db.videos[idx].isDemo = true
-    return ok(db.videos[idx])
-  }),
-
-  http.delete('/api/videos/:id', async ({ request, params }) => {
-    await sleep(250)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-
-    const { id } = params
-    db.videos = db.videos.filter((x) => x.id !== id)
-
+    // 确保 mock db 中至少有一个演示视频
     if (db.videos.length && !db.videos.some((x) => x.isDemo)) {
       db.videos[0].isDemo = true
     }
-
-    return ok(true)
+    const demo = db.videos.find((x) => x.isDemo) || null
+    return ok(demo)
   }),
 ]

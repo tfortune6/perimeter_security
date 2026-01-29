@@ -39,6 +39,11 @@ class VideoSource(SQLModel, table=True):
 
     upload_time: datetime = Field(default_factory=datetime.utcnow, index=True)
 
+    # 新增字段以匹配前端 UI 和 mock 数据结构
+    ext: str = Field(default="", description="文件扩展名, e.g., MP4")
+    size: str = Field(default="", description="格式化后的文件大小, e.g., 128 MB")
+    is_demo: bool = Field(default=False, index=True, description="是否为演示视频")
+
     alarms: Mapped[List["AlarmEvent"]] = Relationship(
         back_populates="video",
         sa_relationship=relationship("AlarmEvent", back_populates="video"),
