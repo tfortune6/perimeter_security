@@ -12,6 +12,7 @@ from app.core.auth import hash_password
 from app.core.database import SessionLocal, init_db
 from app.models import User
 from app.routers import auth, video
+from app.routers import config as config_router
 
 
 @asynccontextmanager
@@ -51,7 +52,10 @@ def create_app() -> FastAPI:
     # 认证：/api/token
     app.include_router(auth.router, prefix="/api")
 
-    # 业务：/api/...
+    # 配置中心：/api/zones, /api/config/save
+    app.include_router(config_router.router, prefix="/api")
+
+    # 视频源管理：/api/videos*
     app.include_router(video.router, prefix="/api")
 
     app.mount("/static", StaticFiles(directory="static"), name="static")

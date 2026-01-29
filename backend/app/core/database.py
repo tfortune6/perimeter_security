@@ -67,7 +67,8 @@ async def get_async_db() -> AsyncGenerator[AsyncSession, None]:
 
 # 创建数据库表（同步）
 def create_db_and_tables():
-    from app.models import VideoSource, AlarmEvent, ZoneConfig, User  # 避免循环导入
+    from app.models import VideoSource, AlarmEvent, ZoneConfig, User, Zone  # 避免循环导入
+
     SQLModel.metadata.create_all(sync_engine)
 
 

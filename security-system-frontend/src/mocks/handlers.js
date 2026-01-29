@@ -36,25 +36,9 @@ const genLiveEvents = (limit = 8) => {
   return items
 }
 
-const ensureZoneList = (sourceId) => {
-  if (!db.zonesBySource[sourceId]) db.zonesBySource[sourceId] = []
-  return db.zonesBySource[sourceId]
-}
-
-const findZoneById = (zoneId) => {
-  for (const sourceId in db.zonesBySource) {
-    const zones = db.zonesBySource[sourceId]
-    const idx = zones.findIndex((z) => z.id === zoneId)
-    if (idx >= 0) {
-      return { zones, idx, sourceId }
-    }
-  }
-  return null
-}
-
 export const handlers = [
-  // 注意: /api/token, /api/videos, /api/videos/upload, /api/videos/:id/* 等接口
-  // 不在这里注册 handler，它们将通过 onUnhandledRequest: 'bypass' 自动穿透到真实后端。
+  // 注意: /api/token, /api/videos*, /api/zones*, /api/config/save 等接口
+  // 不在这里注册 handler，它们将通过 onUnhandledRequest: 'bypass' 自动穿透到真实后端（经 Vite 代理）。
 
   http.get('/api/me', async ({ request }) => {
     await sleep(200)
@@ -103,84 +87,6 @@ export const handlers = [
     const sourceId = url.searchParams.get('sourceId') || db.system.currentSourceId
     const overlays = db.dashboard.overlaysBySource[sourceId] || { boxes: [] }
     return ok(overlays)
-  }),
-
-  http.get('/api/zones', async ({ request }) => {
-    await sleep(200)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-
-    const url = parseUrl(request)
-    const sourceId = url.searchParams.get('sourceId') || db.system.currentSourceId
-    const zones = ensureZoneList(sourceId)
-    return ok(zones)
-  }),
-
-  http.post('/api/zones', async ({ request }) => {
-    await sleep(250)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-
-    const url = parseUrl(request)
-    const sourceId = url.searchParams.get('sourceId') || db.system.currentSourceId
-
-    const body = await request.json().catch(() => ({}))
-    const { name, type, threshold, motion, polygonPoints } = body || {}
-
-    if (!Array.isArray(polygonPoints) || polygonPoints.length < 3) {
-      return fail(400, '多边形至少需要 3 个点')
-    }
-
-    const zones = ensureZoneList(sourceId)
-    const id = `zone-${Math.random().toString(16).slice(2, 8)}`
-
-    const row = {
-      id,
-      name: name || '新建区域',
-      type: type || 'core',
-      threshold: typeof threshold === 'number' ? threshold : 3,
-      motion: typeof motion === 'boolean' ? motion : true,
-      polygonPoints,
-    }
-
-    zones.unshift(row)
-    return ok(row)
-  }),
-
-  http.put('/api/zones/:id', async ({ request, params }) => {
-    await sleep(250)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-
-    const { id } = params
-    const patch = await request.json().catch(() => ({}))
-
-    const found = findZoneById(id)
-    if (!found) return fail(404, '区域不存在')
-
-    const { zones, idx } = found
-    zones[idx] = { ...zones[idx], ...patch }
-    return ok(zones[idx])
-  }),
-
-  http.delete('/api/zones/:id', async ({ request, params }) => {
-    await sleep(250)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-
-    const { id } = params
-    const found = findZoneById(id)
-    if (!found) return fail(404, '区域不存在')
-
-    const { zones, idx } = found
-    zones.splice(idx, 1)
-    return ok(true)
-  }),
-
-  http.post('/api/config/save', async ({ request }) => {
-    await sleep(350)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-
-    const url = parseUrl(request)
-    const sourceId = url.searchParams.get('sourceId') || db.system.currentSourceId
-
-    return ok({ sourceId, savedAt: new Date().toISOString() })
   }),
 
   http.get('/api/alarms', async ({ request }) => {
@@ -233,7 +139,6 @@ export const handlers = [
     await sleep(180)
     if (!auth.requireAuth(request)) return fail(401, '未登录')
 
-    // 确保 mock db 中至少有一个演示视频
     if (db.videos.length && !db.videos.some((x) => x.isDemo)) {
       db.videos[0].isDemo = true
     }

@@ -6,9 +6,9 @@ from typing import Optional, Dict, Any, List
 from uuid import UUID, uuid4
 
 from sqlalchemy import Column
-from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.dialects.postgresql import JSONB
-from sqlmodel import SQLModel, Field, Relationship
+from sqlalchemy.orm import Mapped, relationship
+from sqlmodel import Field, Relationship, SQLModel
 
 
 class ThreatLevel(int, Enum):
@@ -39,7 +39,6 @@ class VideoSource(SQLModel, table=True):
 
     upload_time: datetime = Field(default_factory=datetime.utcnow, index=True)
 
-    # 新增字段以匹配前端 UI 和 mock 数据结构
     ext: str = Field(default="", description="文件扩展名, e.g., MP4")
     size: str = Field(default="", description="格式化后的文件大小, e.g., 128 MB")
     is_demo: bool = Field(default=False, index=True, description="是否为演示视频")
@@ -73,6 +72,23 @@ class AlarmEvent(SQLModel, table=True):
     )
 
 
+# 配置中心区域表（与视频源外键关联）
+class Zone(SQLModel, table=True):
+    __tablename__ = "zones"
+
+    id: str = Field(primary_key=True, index=True)
+
+    # 外键：配置中心用的 sourceId 实际是 video_sources.video_id（UUID 字符串）
+    source_id: UUID = Field(foreign_key="video_sources.video_id", index=True)
+
+    name: str = Field(default="新建区域")
+    type: str = Field(default="core")  # core / warning
+    threshold: float = Field(default=3)
+    motion: bool = Field(default=True)
+
+    polygon_points: List[List[int]] = Field(sa_column=Column(JSONB), default_factory=list)
+
+
 class ZoneConfig(SQLModel, table=True):
     __tablename__ = "zone_configs"
 
@@ -82,7 +98,6 @@ class ZoneConfig(SQLModel, table=True):
 
     zone_type: ZoneType = Field(default=ZoneType.CORE_ZONE)
 
-    # 多边形点集，JSONB 存储：例如 {"points": [[x1,y1],[x2,y2],...]}
     coordinates: Dict[str, Any] = Field(sa_column=Column(JSONB), default_factory=dict)
 
     video: Mapped[Optional["VideoSource"]] = Relationship(
@@ -91,7 +106,6 @@ class ZoneConfig(SQLModel, table=True):
     )
 
 
-# 新增 User 模型
 class User(SQLModel, table=True):
     __tablename__ = "users"
 
