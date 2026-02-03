@@ -72,6 +72,19 @@ class AlarmEvent(SQLModel, table=True):
     )
 
 
+class SystemSettings(SQLModel, table=True):
+    __tablename__ = "system_settings"
+
+    # 仅一行配置，使用固定主键
+    id: int = Field(default=1, primary_key=True)
+
+    current_source_id: Optional[UUID] = Field(default=None, foreign_key="video_sources.video_id", index=True)
+
+    online: bool = Field(default=True)
+    fps: int = Field(default=24)
+    version: str = Field(default="v0.1.0")
+
+
 # 配置中心区域表（与视频源外键关联）
 class Zone(SQLModel, table=True):
     __tablename__ = "zones"

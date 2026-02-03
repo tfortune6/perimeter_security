@@ -46,28 +46,6 @@ export const handlers = [
     return ok(db.user)
   }),
 
-  http.get('/api/system/status', async ({ request }) => {
-    await sleep(150)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-    return ok(db.system)
-  }),
-
-  http.put('/api/system/status', async ({ request }) => {
-    await sleep(200)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-
-    const patch = await request.json().catch(() => ({}))
-    if (patch.currentSourceId) {
-      db.system.currentSourceId = patch.currentSourceId
-    }
-    return ok(db.system)
-  }),
-
-  http.get('/api/sources', async ({ request }) => {
-    await sleep(150)
-    if (!auth.requireAuth(request)) return fail(401, '未登录')
-    return ok(db.sources)
-  }),
 
   http.get('/api/dashboard/events', async ({ request }) => {
     await sleep(250)

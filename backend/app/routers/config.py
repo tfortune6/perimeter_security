@@ -8,9 +8,98 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 
 from app.core.database import get_sqlmodel_db
-from app.models import Zone
+from app.models import VideoSource, Zone, SystemSettings
 
 router = APIRouter(tags=["config"])
+
+
+def _source_to_dict(s: VideoSource) -> dict:
+    # 与前端 Dashboard 的 sources 下拉兼容：{id, name}
+    return {"id": str(s.video_id), "name": s.file_name}
+
+
+@router.get("/sources")
+def list_sources(db: Session = Depends(get_sqlmodel_db)):
+    items = db.exec(select(VideoSource).order_by(VideoSource.upload_time.desc())).all()
+    return {"code": 0, "message": "ok", "data": [_source_to_dict(x) for x in items]}
+
+
+@router.get("/system/status")
+def get_system_status(db: Session = Depends(get_sqlmodel_db)):
+    # 读取持久化配置，若不存在则初始化
+    settings = db.get(SystemSettings, 1)
+    if not settings:
+        settings = SystemSettings(id=1)
+        db.add(settings)
+        db.commit()
+        db.refresh(settings)
+
+    # 若未设置 current_source_id，则使用最新视频作为默认
+    current = settings.current_source_id
+    if not current:
+        latest = db.exec(select(VideoSource).order_by(VideoSource.upload_time.desc())).first()
+        if latest:
+            current = latest.video_id
+            settings.current_source_id = current
+            db.add(settings)
+            db.commit()
+
+    return {
+        "code": 0,
+        "message": "ok",
+        "data": {
+            "online": settings.online,
+            "version": settings.version,
+            "fps": settings.fps,
+            "currentSourceId": str(current) if current else "",
+        },
+    }
+
+
+@router.put("/system/status")
+def update_system_status(patch: dict, db: Session = Depends(get_sqlmodel_db)):
+    # 确保配置行存在
+    settings = db.get(SystemSettings, 1)
+    if not settings:
+        settings = SystemSettings(id=1)
+        db.add(settings)
+
+    # 更新 currentSourceId（若传入）
+    current = patch.get("currentSourceId")
+    if current is not None:
+        try:
+            source_uuid = UUID(str(current))
+        except Exception:
+            raise HTTPException(status_code=400, detail="currentSourceId 格式不正确")
+
+        exists = db.exec(select(VideoSource).where(VideoSource.video_id == source_uuid)).first()
+        if not exists:
+            raise HTTPException(status_code=400, detail="currentSourceId 不存在")
+
+        settings.current_source_id = source_uuid
+
+    # 可选：更新其他字段（暂不暴露给前端）
+    if "online" in patch:
+        settings.online = bool(patch["online"])
+    if "fps" in patch:
+        settings.fps = int(patch["fps"])
+    if "version" in patch:
+        settings.version = str(patch["version"])
+
+    db.add(settings)
+    db.commit()
+    db.refresh(settings)
+
+    return {
+        "code": 0,
+        "message": "ok",
+        "data": {
+            "online": settings.online,
+            "version": settings.version,
+            "fps": settings.fps,
+            "currentSourceId": str(settings.current_source_id) if settings.current_source_id else "",
+        },
+    }
 
 
 def _zone_to_dict(z: Zone) -> dict:
