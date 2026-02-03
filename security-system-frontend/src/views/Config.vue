@@ -68,7 +68,7 @@ const fetchVideoSources = async () => {
   const list = await getVideos()
   videoSources.value = list
   if (!currentVideoId.value && list.length) {
-    currentVideoId.value = list[0].id
+    currentVideoId.value = list[0].video_id || list[0].id
   }
 }
 
@@ -416,7 +416,12 @@ onBeforeUnmount(() => {
         <div class="card">
           <div class="label">视频源选择</div>
           <el-select v-model="currentVideoId" class="w" size="large" :disabled="loading">
-            <el-option v-for="opt in videoSources" :key="opt.id" :label="opt.name" :value="opt.id" />
+            <el-option
+              v-for="opt in videoSources"
+              :key="opt.video_id || opt.id"
+              :label="opt.file_name || opt.name"
+              :value="opt.video_id || opt.id"
+            />
           </el-select>
         </div>
 
