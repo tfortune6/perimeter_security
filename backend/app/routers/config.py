@@ -90,6 +90,14 @@ def update_system_status(patch: dict, db: Session = Depends(get_sqlmodel_db)):
     db.commit()
     db.refresh(settings)
 
+    # 同步 video_sources.is_demo（兼容旧逻辑/列表展示）
+    if settings.current_source_id:
+        all_videos = db.exec(select(VideoSource)).all()
+        for v in all_videos:
+            v.is_demo = (v.video_id == settings.current_source_id)
+            db.add(v)
+        db.commit()
+
     return {
         "code": 0,
         "message": "ok",

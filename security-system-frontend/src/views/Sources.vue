@@ -4,6 +4,7 @@ import { ElMessage } from 'element-plus'
 import AppLayout from '../components/layout/AppLayout.vue'
 import { deleteVideo, getVideos, setDemoVideo, uploadVideo } from '../api/videos'
 import { deleteVideoFile, putVideoFile } from '../storage/videoStore'
+import { getSystemStatus } from '../api/system'
 
 const userAvatar =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuBw_U7F6T6qfTV8Bm9nj4aOabzd9KgjjATZ21OkZ1YsuuKTkirUCIOJk4AsWQ4_d39X9opwjcZB32_IuWay8QEamkxgzcIBXH0_ZmsB1Xo14f9UWCBCdHNedtJ8LvDICPdrNBcb_PneogAfLsZZwFOuJlvwGxWUwcJHPBTTGyRifBlLfwa-yO2Yph0DGAQlsUVH6uK1rC2QBOFFb_T4QiX2tu4qDHmMEUnDYHzP9vP57TyVYYXe4EV0abzOA2Va3MNVtxpFLSyHNMw'
@@ -27,7 +28,16 @@ const filtered = computed(() => {
 const fetchList = async () => {
   loading.value = true
   try {
-    list.value = await getVideos({ keyword: keyword.value })
+    const [videos, status] = await Promise.all([
+      getVideos({ keyword: keyword.value }),
+      getSystemStatus().catch(() => null),
+    ])
+
+    const currentId = status?.currentSourceId || ''
+    list.value = (videos || []).map((v) => ({
+      ...v,
+      isDemo: Boolean(currentId && v.id === currentId),
+    }))
   } catch (e) {
     ElMessage.error(e?.message || '加载失败')
   } finally {
@@ -96,7 +106,9 @@ const remove = async (row) => {
     ElMessage.success('已删除')
     await fetchList()
   } catch (e) {
-    ElMessage.error(e?.message || '删除失败')
+    // 优先显示后端返回的 detail（HTTPException.detail）
+    const msg = e?.response?.data?.detail || e?.message || '删除失败'
+    ElMessage.error(msg)
   } finally {
     loading.value = false
   }

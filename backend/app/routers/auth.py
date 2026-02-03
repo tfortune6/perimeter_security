@@ -40,3 +40,25 @@ def read_users_me(token: str = Depends(oauth2_scheme), db: Session = Depends(get
         raise HTTPException(status_code=401, detail="用户不存在")
 
     return {"id": user.id, "username": user.username}
+
+
+@router.get("/me")
+def read_me(token: str = Depends(oauth2_scheme), db: Session = Depends(get_sqlmodel_db)):
+    username = decode_token(token)
+
+    stmt = select(User).where(User.username == username)
+    user = db.exec(stmt).first()
+    if not user:
+        raise HTTPException(status_code=401, detail="用户不存在")
+
+    # 与前端 AppLayout 使用字段对齐
+    return {
+        "code": 0,
+        "message": "ok",
+        "data": {
+            "id": user.id,
+            "name": user.username,
+            "role": "系统管理员",
+            "avatarUrl": "",
+        },
+    }

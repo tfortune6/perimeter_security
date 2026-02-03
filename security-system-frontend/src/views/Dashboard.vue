@@ -138,6 +138,7 @@ watch(currentSourceId, async (val, old) => {
   } catch {
     // 忽略
   }
+  await fetchDemoVideo()
   await fetchOverlays()
   await fetchZones()
 })
@@ -152,23 +153,8 @@ onMounted(async () => {
 
   document.addEventListener('fullscreenchange', syncFullscreenState)
 
-  timer = setInterval(async () => {
-    await fetchEvents()
-    await fetchDemoVideo()
-
-    // 同步视频源列表（上传新视频后，仪表盘下拉可自动出现）
-    try {
-      const list = await getSources()
-      sources.value = list
-      if (currentSourceId.value && !list.some((s) => s.id === currentSourceId.value)) {
-        currentSourceId.value = list[0]?.id || ''
-      }
-    } catch {
-      // 忽略
-    }
-
-    await fetchZones()
-  }, 3000)
+  // 取消 3 秒轮询刷新：改为按需手动刷新/切换源刷新
+  timer = null
 })
 
 onBeforeUnmount(() => {

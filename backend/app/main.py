@@ -13,6 +13,8 @@ from app.core.database import SessionLocal, init_db
 from app.models import User
 from app.routers import auth, video
 from app.routers import config as config_router
+from app.routers import dashboard as dashboard_router
+from app.routers import alarms as alarms_router
 
 
 @asynccontextmanager
@@ -57,6 +59,12 @@ def create_app() -> FastAPI:
 
     # 视频源管理：/api/videos*
     app.include_router(video.router, prefix="/api")
+
+    # 仪表盘：/api/dashboard/*
+    app.include_router(dashboard_router.router, prefix="/api")
+
+    # 告警记录：/api/alarms*
+    app.include_router(alarms_router.router, prefix="/api")
 
     app.mount("/static", StaticFiles(directory="static"), name="static")
 

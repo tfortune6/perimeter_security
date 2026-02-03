@@ -9,7 +9,7 @@ from sqlmodel import Session, select
 
 from app.core.config import settings
 from app.core.database import get_sqlmodel_db
-from app.models import VideoSource
+from app.models import AlarmEvent, SystemSettings, VideoSource, Zone, ZoneConfig
 
 router = APIRouter(tags=["videos"])
 
@@ -115,30 +115,69 @@ async def upload_video(file: UploadFile = File(...), db: Session = Depends(get_s
 
 @router.get("/videos")
 def list_videos(keyword: Optional[str] = None, db: Session = Depends(get_sqlmodel_db)):
+    settings = db.get(SystemSettings, 1)
+    current_id = str(settings.current_source_id) if settings and settings.current_source_id else ""
+
     stmt = select(VideoSource)
     if keyword:
         stmt = stmt.where(VideoSource.file_name.ilike(f"%{keyword}%"))
     items = db.exec(stmt.order_by(VideoSource.upload_time.desc())).all()
 
-    return {"code": 0, "message": "ok", "data": [_to_ui_dict(v) for v in items]}
+    data = []
+    for v in items:
+        row = _to_ui_dict(v)
+        # 以 system_settings.current_source_id 为权威“当前演示源”
+        row["isDemo"] = bool(current_id and str(v.video_id) == current_id)
+        data.append(row)
+
+    return {"code": 0, "message": "ok", "data": data}
 
 
 @router.post("/videos/{video_id}/set-demo")
 def set_demo(video_id: str, db: Session = Depends(get_sqlmodel_db)):
-    all_videos = db.exec(select(VideoSource)).all()
-    for v in all_videos:
-        v.is_demo = False
-        db.add(v)
-
     target_video = db.get(VideoSource, video_id)
     if not target_video:
         raise HTTPException(status_code=404, detail="视频不存在")
-    target_video.is_demo = True
-    db.add(target_video)
+
+    # 统一写入 system_settings.current_source_id（权威状态）
+    settings = db.get(SystemSettings, 1)
+    if not settings:
+        settings = SystemSettings(id=1)
+        db.add(settings)
+
+    settings.current_source_id = target_video.video_id
+    db.add(settings)
     db.commit()
-    db.refresh(target_video)
+    db.refresh(settings)
+
+    # 保持 is_demo 字段同步（兼容旧逻辑）
+    all_videos = db.exec(select(VideoSource)).all()
+    for v in all_videos:
+        v.is_demo = (v.video_id == target_video.video_id)
+        db.add(v)
+    db.commit()
 
     return {"code": 0, "message": "ok", "data": _to_ui_dict(target_video)}
+
+
+@router.get("/videos/demo")
+def get_demo_video(db: Session = Depends(get_sqlmodel_db)):
+    # 仪表盘大屏使用的“当前源视频”：优先 system_settings.current_source_id
+    settings = db.get(SystemSettings, 1)
+    current_id = settings.current_source_id if settings else None
+
+    video = None
+    if current_id:
+        video = db.get(VideoSource, str(current_id))
+
+    if not video:
+        # fallback：取最新上传视频
+        video = db.exec(select(VideoSource).order_by(VideoSource.upload_time.desc())).first()
+
+    if not video:
+        return {"code": 0, "message": "ok", "data": None}
+
+    return {"code": 0, "message": "ok", "data": _to_ui_dict(video)}
 
 
 @router.delete("/videos/{video_id}")
@@ -146,6 +185,17 @@ def delete_video(video_id: str, db: Session = Depends(get_sqlmodel_db)):
     target_video = db.get(VideoSource, video_id)
     if not target_video:
         raise HTTPException(status_code=404, detail="视频不存在")
+
+    # 删除前检查关联数据，避免外键约束导致 500
+    zone_count = db.exec(select(Zone).where(Zone.source_id == target_video.video_id)).all()
+    alarm_count = db.exec(select(AlarmEvent).where(AlarmEvent.video_id == target_video.video_id)).all()
+    config_count = db.exec(select(ZoneConfig).where(ZoneConfig.video_id == target_video.video_id)).all()
+
+    if zone_count or alarm_count or config_count:
+        raise HTTPException(
+            status_code=400,
+            detail="删除失败：该视频源存在关联数据（区域/告警/配置）。请先在【配置中心】删除该视频源的区域，并清理相关告警记录/配置后，再重试删除。",
+        )
 
     try:
         if os.path.exists(target_video.file_path):
@@ -155,5 +205,12 @@ def delete_video(video_id: str, db: Session = Depends(get_sqlmodel_db)):
 
     db.delete(target_video)
     db.commit()
+
+    # 如果删除的是当前选择源，则清空设置，避免指向不存在的视频
+    settings = db.get(SystemSettings, 1)
+    if settings and settings.current_source_id and str(settings.current_source_id) == str(video_id):
+        settings.current_source_id = None
+        db.add(settings)
+        db.commit()
 
     return {"code": 0, "message": "ok", "data": True}
