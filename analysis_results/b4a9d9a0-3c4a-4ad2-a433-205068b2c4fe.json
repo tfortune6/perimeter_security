@@ -1698,8 +1698,8 @@
             "w": 0.050379371643066405,
             "h": 0.3289870368109809
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -1716,8 +1716,8 @@
             "w": 0.050389575958251956,
             "h": 0.32900848388671877
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -1884,8 +1884,8 @@
             "w": 0.05264749526977539,
             "h": 0.241802978515625
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -1902,8 +1902,8 @@
             "w": 0.05285224914550781,
             "h": 0.23018052842881945
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -1920,8 +1920,8 @@
             "w": 0.05325508117675781,
             "h": 0.28570866054958766
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -1938,8 +1938,8 @@
             "w": 0.053167295455932614,
             "h": 0.2590762668185764
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -1956,8 +1956,8 @@
             "w": 0.05290412902832031,
             "h": 0.25775366889105905
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -1974,8 +1974,8 @@
             "w": 0.055845117568969725,
             "h": 0.26021287706163193
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -1992,8 +1992,8 @@
             "w": 0.055759096145629884,
             "h": 0.25896712409125433
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2025,8 +2025,8 @@
             "w": 0.059822797775268555,
             "h": 0.25035743713378905
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2043,8 +2043,8 @@
             "w": 0.05963678359985351,
             "h": 0.2507035573323568
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2061,8 +2061,8 @@
             "w": 0.05973873138427734,
             "h": 0.2568704817030165
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2079,8 +2079,8 @@
             "w": 0.059648561477661136,
             "h": 0.25303175184461807
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2097,8 +2097,8 @@
             "w": 0.05988478660583496,
             "h": 0.25334197150336374
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2115,8 +2115,8 @@
             "w": 0.06364727020263672,
             "h": 0.3376519521077474
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2133,8 +2133,8 @@
             "w": 0.06400895118713379,
             "h": 0.33895263671875
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2151,8 +2151,8 @@
             "w": 0.06474742889404297,
             "h": 0.33733045789930555
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2169,8 +2169,8 @@
             "w": 0.06423749923706054,
             "h": 0.3360071818033854
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2187,8 +2187,8 @@
             "w": 0.06426782608032226,
             "h": 0.3362677256266276
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2205,8 +2205,8 @@
             "w": 0.06517982482910156,
             "h": 0.33332977294921873
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2223,8 +2223,8 @@
             "w": 0.06537981033325195,
             "h": 0.3287472195095486
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2241,8 +2241,8 @@
             "w": 0.06684212684631348,
             "h": 0.3309972127278646
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2324,8 +2324,8 @@
             "w": 0.06360425949096679,
             "h": 0.3178066677517361
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2342,8 +2342,8 @@
             "w": 0.06268157958984374,
             "h": 0.3210505167643229
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2360,8 +2360,8 @@
             "w": 0.06441292762756348,
             "h": 0.3302866617838542
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2378,8 +2378,8 @@
             "w": 0.06282148361206055,
             "h": 0.31978573269314237
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2396,8 +2396,8 @@
             "w": 0.0669064998626709,
             "h": 0.3274624294704861
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         },
         {
           "id": "5ac7ad38-3522-4ac6-b724-029601f01188",
@@ -2408,8 +2408,8 @@
             "w": 0.09910318851470948,
             "h": 0.3302953084309896
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2426,8 +2426,8 @@
             "w": 0.06532716751098633,
             "h": 0.3257086435953776
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         },
         {
           "id": "25e602d5-399c-451a-bebe-40a32944264b",
@@ -2438,8 +2438,8 @@
             "w": 0.0971588134765625,
             "h": 0.32964647081163195
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2456,8 +2456,8 @@
             "w": 0.06437807083129883,
             "h": 0.3265209621853299
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2474,8 +2474,8 @@
             "w": 0.06413207054138184,
             "h": 0.32206492953830296
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2492,8 +2492,8 @@
             "w": 0.06398072242736816,
             "h": 0.32090254889594183
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2510,8 +2510,8 @@
             "w": 0.06363964080810547,
             "h": 0.31871117485894096
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2528,8 +2528,8 @@
             "w": 0.06364908218383789,
             "h": 0.3185916052924262
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2546,8 +2546,8 @@
             "w": 0.06432385444641113,
             "h": 0.3220611996120877
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2564,8 +2564,8 @@
             "w": 0.06466217041015625,
             "h": 0.3239081488715278
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2582,8 +2582,8 @@
             "w": 0.06488442420959473,
             "h": 0.32449120415581595
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2600,8 +2600,8 @@
             "w": 0.06514010429382325,
             "h": 0.3233267890082465
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2618,8 +2618,8 @@
             "w": 0.06515483856201172,
             "h": 0.3227291954888238
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2636,8 +2636,8 @@
             "w": 0.06568727493286133,
             "h": 0.3248743693033854
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2654,8 +2654,8 @@
             "w": 0.06597862243652344,
             "h": 0.3221113840738932
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2672,8 +2672,8 @@
             "w": 0.06564655303955078,
             "h": 0.31895294189453127
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         },
         {
           "id": "b0b06709-56e6-41c4-b133-7db828807761",
@@ -2684,8 +2684,8 @@
             "w": 0.09263052940368652,
             "h": 0.3250052558051215
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2702,8 +2702,8 @@
             "w": 0.06574201583862305,
             "h": 0.3276738484700521
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2720,8 +2720,8 @@
             "w": 0.06572027206420898,
             "h": 0.3263054317898221
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2738,8 +2738,8 @@
             "w": 0.06631507873535156,
             "h": 0.33289015028211805
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         },
         {
           "id": "54a52152-b79b-4012-a75e-a02e41b50f1e",
@@ -2750,8 +2750,8 @@
             "w": 0.09901773929595947,
             "h": 0.33846452501085067
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2768,8 +2768,8 @@
             "w": 0.06591305732727051,
             "h": 0.3443993462456597
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2786,8 +2786,8 @@
             "w": 0.0661306381225586,
             "h": 0.34463433159722223
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2804,8 +2804,8 @@
             "w": 0.06680631637573242,
             "h": 0.3446941799587674
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2822,8 +2822,8 @@
             "w": 0.06662945747375489,
             "h": 0.3439114040798611
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2840,8 +2840,8 @@
             "w": 0.06736698150634765,
             "h": 0.3431966569688585
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         },
         {
           "id": "4efb5a32-cf1d-4b15-af78-362bd5589fc3",
@@ -2852,8 +2852,8 @@
             "w": 0.09978106021881103,
             "h": 0.3464978959825304
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2870,8 +2870,8 @@
             "w": 0.0675018310546875,
             "h": 0.34271341959635415
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         },
         {
           "id": "2baaefb6-e002-464f-8507-644cdf075e4d",
@@ -2882,8 +2882,8 @@
             "w": 0.09774322509765625,
             "h": 0.34619038899739585
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2900,8 +2900,8 @@
             "w": 0.0676194190979004,
             "h": 0.344917975531684
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         },
         {
           "id": "b1fa11be-f5a2-4301-9eb0-01d7143412d4",
@@ -2912,8 +2912,8 @@
             "w": 0.09756927490234375,
             "h": 0.3480714586046007
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2930,8 +2930,8 @@
             "w": 0.06647872924804688,
             "h": 0.3434102800157335
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2948,8 +2948,8 @@
             "w": 0.06644964218139648,
             "h": 0.34300825330946183
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2966,8 +2966,8 @@
             "w": 0.06634597778320313,
             "h": 0.34120250278049047
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -2984,8 +2984,8 @@
             "w": 0.07434940338134766,
             "h": 0.3411236233181424
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3002,8 +3002,8 @@
             "w": 0.07576103210449218,
             "h": 0.34047982957628037
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3020,8 +3020,8 @@
             "w": 0.10656487941741943,
             "h": 0.3388529035780165
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3038,8 +3038,8 @@
             "w": 0.10519616603851319,
             "h": 0.35363629659016926
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3056,8 +3056,8 @@
             "w": 0.10294589996337891,
             "h": 0.3530713823106554
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3074,8 +3074,8 @@
             "w": 0.10014245510101319,
             "h": 0.35297732883029515
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3092,8 +3092,8 @@
             "w": 0.10014457702636718,
             "h": 0.3529883490668403
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3110,8 +3110,8 @@
             "w": 0.09881801605224609,
             "h": 0.352620612250434
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3128,8 +3128,8 @@
             "w": 0.09888620376586914,
             "h": 0.35262451171875
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3146,8 +3146,8 @@
             "w": 0.09977602958679199,
             "h": 0.3544128841824002
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3164,8 +3164,8 @@
             "w": 0.10073587894439698,
             "h": 0.35766737196180554
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3182,8 +3182,8 @@
             "w": 0.10028059482574463,
             "h": 0.3538567437065972
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3200,8 +3200,8 @@
             "w": 0.09994587898254395,
             "h": 0.35805833604600695
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3218,8 +3218,8 @@
             "w": 0.09985628128051757,
             "h": 0.3582635243733724
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3236,8 +3236,8 @@
             "w": 0.10006647109985352,
             "h": 0.3586327446831597
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3254,8 +3254,8 @@
             "w": 0.10013256072998047,
             "h": 0.35950096978081597
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3272,8 +3272,8 @@
             "w": 0.10006256103515625,
             "h": 0.35872311062282985
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3290,8 +3290,8 @@
             "w": 0.09997305870056153,
             "h": 0.3590850406222873
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3308,8 +3308,8 @@
             "w": 0.09992542266845703,
             "h": 0.35926717122395835
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3326,8 +3326,8 @@
             "w": 0.09967060089111328,
             "h": 0.35892567104763456
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3344,8 +3344,8 @@
             "w": 0.09961156845092774,
             "h": 0.35826182895236547
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3362,8 +3362,8 @@
             "w": 0.09966168403625489,
             "h": 0.3580012003580729
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3380,8 +3380,8 @@
             "w": 0.10026383399963379,
             "h": 0.3586053212483724
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3398,8 +3398,8 @@
             "w": 0.10014638900756836,
             "h": 0.3586542765299479
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3416,8 +3416,8 @@
             "w": 0.10029220581054688,
             "h": 0.3491390652126736
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3434,8 +3434,8 @@
             "w": 0.09980883598327636,
             "h": 0.3490075005425347
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3452,8 +3452,8 @@
             "w": 0.09979743957519531,
             "h": 0.3490088568793403
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3470,8 +3470,8 @@
             "w": 0.09890003204345703,
             "h": 0.34271681043836805
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3488,8 +3488,8 @@
             "w": 0.09890127182006836,
             "h": 0.3427191416422526
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3506,8 +3506,8 @@
             "w": 0.0981598138809204,
             "h": 0.3381259494357639
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3524,8 +3524,8 @@
             "w": 0.09827005863189697,
             "h": 0.3283766428629557
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3542,8 +3542,8 @@
             "w": 0.09827547073364258,
             "h": 0.32761667039659287
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3560,8 +3560,8 @@
             "w": 0.10067806243896485,
             "h": 0.3376378377278646
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3578,8 +3578,8 @@
             "w": 0.10067732334136963,
             "h": 0.33763529459635416
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3596,8 +3596,8 @@
             "w": 0.0984100341796875,
             "h": 0.3489556630452474
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3614,8 +3614,8 @@
             "w": 0.06929225921630859,
             "h": 0.3452757093641493
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3632,8 +3632,8 @@
             "w": 0.06888155937194824,
             "h": 0.3448872884114583
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3650,8 +3650,8 @@
             "w": 0.0629281997680664,
             "h": 0.33879513210720485
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3668,8 +3668,8 @@
             "w": 0.06251978874206543,
             "h": 0.3391143798828125
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3686,8 +3686,8 @@
             "w": 0.08459684848785401,
             "h": 0.33839276631673176
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3704,8 +3704,8 @@
             "w": 0.08322286605834961,
             "h": 0.3394983927408854
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3722,8 +3722,8 @@
             "w": 0.08303117752075195,
             "h": 0.33977339002821183
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3740,8 +3740,8 @@
             "w": 0.07226591110229492,
             "h": 0.33041466606987846
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3758,8 +3758,8 @@
             "w": 0.07235546112060547,
             "h": 0.3299780527750651
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3776,8 +3776,8 @@
             "w": 0.0734811544418335,
             "h": 0.3399946424696181
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3794,8 +3794,8 @@
             "w": 0.07327554225921631,
             "h": 0.3375837961832682
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3812,8 +3812,8 @@
             "w": 0.07300682067871093,
             "h": 0.3347642686631944
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3830,8 +3830,8 @@
             "w": 0.07331771850585937,
             "h": 0.3330517239040799
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3848,8 +3848,8 @@
             "w": 0.07401399612426758,
             "h": 0.3322447035047743
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3866,8 +3866,8 @@
             "w": 0.07489888668060303,
             "h": 0.3285120646158854
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3884,8 +3884,8 @@
             "w": 0.07407169342041016,
             "h": 0.32729623582628037
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3902,8 +3902,8 @@
             "w": 0.07403242588043213,
             "h": 0.3273820241292318
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3920,8 +3920,8 @@
             "w": 0.07627954483032226,
             "h": 0.3501312255859375
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3938,8 +3938,8 @@
             "w": 0.07627363204956054,
             "h": 0.3501061333550347
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -3956,8 +3956,8 @@
             "w": 0.0761082649230957,
             "h": 0.29160664876302084
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         },
         {
           "id": "1b570b62-a775-4f86-be06-9deab09c1bc7",
@@ -3986,8 +3986,8 @@
             "w": 0.07670068740844727,
             "h": 0.2879331800672743
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         },
         {
           "id": "ee13d22e-84df-4c1d-86f5-df74d2a6bb14",
@@ -4016,8 +4016,8 @@
             "w": 0.07675657272338868,
             "h": 0.28728599548339845
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         },
         {
           "id": "084c9d88-a0ab-4e7a-89cc-f46b72e3cdcc",
@@ -4064,8 +4064,8 @@
             "w": 0.0779006004333496,
             "h": 0.29529198540581597
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -4082,8 +4082,8 @@
             "w": 0.07968368530273437,
             "h": 0.3294628567165799
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -5691,8 +5691,8 @@
             "w": 0.021842384338378908,
             "h": 0.06385447184244791
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -5709,8 +5709,8 @@
             "w": 0.028457450866699218,
             "h": 0.06778835720486111
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -5727,8 +5727,8 @@
             "w": 0.028449821472167968,
             "h": 0.06781658596462674
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -5760,8 +5760,8 @@
             "w": 0.07152767181396484,
             "h": 0.35791744656032987
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -5778,8 +5778,8 @@
             "w": 0.07273797988891602,
             "h": 0.3554295857747396
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -5796,8 +5796,8 @@
             "w": 0.06469001770019531,
             "h": 0.24538468254937065
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -5814,8 +5814,8 @@
             "w": 0.06469001770019531,
             "h": 0.2468597412109375
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -5832,8 +5832,8 @@
             "w": 0.06462106704711915,
             "h": 0.23482632107204862
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -5850,8 +5850,8 @@
             "w": 0.06625580787658691,
             "h": 0.2461690690782335
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -5868,8 +5868,8 @@
             "w": 0.06628913879394531,
             "h": 0.24659224616156683
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -5886,8 +5886,8 @@
             "w": 0.07112369537353516,
             "h": 0.25084542168511287
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         },
         {
           "id": "1661443b-9b40-48e5-a74b-2118bfad2dc0",
@@ -5898,8 +5898,8 @@
             "w": 0.022913551330566405,
             "h": 0.06329447428385417
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -5916,8 +5916,8 @@
             "w": 0.07121973037719727,
             "h": 0.25107591417100694
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         },
         {
           "id": "5a4de05b-3f96-41b6-b790-f1c64aeab0ab",
@@ -5928,8 +5928,8 @@
             "w": 0.02293882369995117,
             "h": 0.06332414415147569
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -5946,8 +5946,8 @@
             "w": 0.07338452339172363,
             "h": 0.2585652669270833
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -5964,8 +5964,8 @@
             "w": 0.07928109169006348,
             "h": 0.27787933349609373
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": null,
+          "color": "green"
         }
       ]
     },
@@ -5982,8 +5982,8 @@
             "w": 0.07316226959228515,
             "h": 0.27821646796332467
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6000,8 +6000,8 @@
             "w": 0.06739850044250488,
             "h": 0.27734612358940974
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6018,8 +6018,8 @@
             "w": 0.06740484237670899,
             "h": 0.2771352132161458
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6036,8 +6036,8 @@
             "w": 0.06787538528442383,
             "h": 0.2927720811631944
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6054,8 +6054,8 @@
             "w": 0.07627329826354981,
             "h": 0.30298707750108506
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6072,8 +6072,8 @@
             "w": 0.0762700080871582,
             "h": 0.30298809475368926
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6090,8 +6090,8 @@
             "w": 0.05791416168212891,
             "h": 0.29532945421006945
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         },
         {
           "id": "19c45f9c-a1df-4c66-a628-9b6e3b521b23",
@@ -6102,8 +6102,8 @@
             "w": 0.05382957458496094,
             "h": 0.2223611619737413
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6120,8 +6120,8 @@
             "w": 0.05782861709594726,
             "h": 0.290521240234375
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6138,8 +6138,8 @@
             "w": 0.056249237060546874,
             "h": 0.2420383029513889
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6156,8 +6156,8 @@
             "w": 0.05574431419372559,
             "h": 0.259377204047309
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6174,8 +6174,8 @@
             "w": 0.05573515892028809,
             "h": 0.25962066650390625
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6192,8 +6192,8 @@
             "w": 0.057226371765136716,
             "h": 0.2569629245334201
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6210,8 +6210,8 @@
             "w": 0.056468963623046875,
             "h": 0.25759429931640626
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6228,8 +6228,8 @@
             "w": 0.05652871131896973,
             "h": 0.25797364976671006
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6246,8 +6246,8 @@
             "w": 0.05447854995727539,
             "h": 0.2604496426052517
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6264,8 +6264,8 @@
             "w": 0.05443840026855469,
             "h": 0.26048058403862845
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6282,8 +6282,8 @@
             "w": 0.05682096481323242,
             "h": 0.2500295850965712
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6300,8 +6300,8 @@
             "w": 0.05699515342712402,
             "h": 0.25085423787434896
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6318,8 +6318,8 @@
             "w": 0.054663562774658205,
             "h": 0.2522852579752604
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6336,8 +6336,8 @@
             "w": 0.05374159812927246,
             "h": 0.23706478542751735
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6354,8 +6354,8 @@
             "w": 0.053349781036376956,
             "h": 0.23638153076171875
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6372,8 +6372,8 @@
             "w": 0.056095218658447264,
             "h": 0.2532862345377604
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6390,8 +6390,8 @@
             "w": 0.055389404296875,
             "h": 0.24752926296657987
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6408,8 +6408,8 @@
             "w": 0.052434110641479494,
             "h": 0.24946221245659722
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6426,8 +6426,8 @@
             "w": 0.05411367416381836,
             "h": 0.2624992370605469
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6444,8 +6444,8 @@
             "w": 0.05309219360351562,
             "h": 0.26031731499565974
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6462,8 +6462,8 @@
             "w": 0.055175256729125974,
             "h": 0.26701007419162326
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6480,8 +6480,8 @@
             "w": 0.055255126953125,
             "h": 0.2670674641927083
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6498,8 +6498,8 @@
             "w": 0.053887367248535156,
             "h": 0.2695711771647135
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6516,8 +6516,8 @@
             "w": 0.053172874450683597,
             "h": 0.27138086954752605
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6534,8 +6534,8 @@
             "w": 0.053301334381103516,
             "h": 0.27203114827473956
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6552,8 +6552,8 @@
             "w": 0.05078325271606445,
             "h": 0.2632865905761719
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6570,8 +6570,8 @@
             "w": 0.050872802734375,
             "h": 0.2634718153211806
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6588,8 +6588,8 @@
             "w": 0.05381336212158203,
             "h": 0.2781407674153646
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6606,8 +6606,8 @@
             "w": 0.04929780960083008,
             "h": 0.25324859619140627
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6624,8 +6624,8 @@
             "w": 0.04905767440795898,
             "h": 0.2417263454861111
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6642,8 +6642,8 @@
             "w": 0.05404372215270996,
             "h": 0.25418226453993054
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6660,8 +6660,8 @@
             "w": 0.05363388061523437,
             "h": 0.25514873928493925
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6678,8 +6678,8 @@
             "w": 0.052815723419189456,
             "h": 0.2467007107204861
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6696,8 +6696,8 @@
             "w": 0.04855766296386719,
             "h": 0.21493216620551214
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6714,8 +6714,8 @@
             "w": 0.04837942123413086,
             "h": 0.2142520480685764
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6732,8 +6732,8 @@
             "w": 0.04946212768554688,
             "h": 0.24496290418836805
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6750,8 +6750,8 @@
             "w": 0.04986658096313477,
             "h": 0.24589614868164061
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6768,8 +6768,8 @@
             "w": 0.052532958984375,
             "h": 0.24271892971462675
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6786,8 +6786,8 @@
             "w": 0.054139328002929685,
             "h": 0.22575514051649306
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6804,8 +6804,8 @@
             "w": 0.0541109561920166,
             "h": 0.22665634155273437
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6822,8 +6822,8 @@
             "w": 0.05268592834472656,
             "h": 0.2425509982638889
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         },
         {
           "id": "f5c609eb-c600-498b-bf3e-64ce01c97ea1",
@@ -6834,8 +6834,8 @@
             "w": 0.04221525192260742,
             "h": 0.1921051025390625
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6852,8 +6852,8 @@
             "w": 0.052629280090332034,
             "h": 0.24060940212673612
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         },
         {
           "id": "6dfcb17c-2417-4b54-b9c5-15d477276574",
@@ -6864,8 +6864,8 @@
             "w": 0.04158430099487305,
             "h": 0.1862642076280382
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6882,8 +6882,8 @@
             "w": 0.05167765617370605,
             "h": 0.23537173800998265
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6900,8 +6900,8 @@
             "w": 0.052953052520751956,
             "h": 0.23889872233072917
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6918,8 +6918,8 @@
             "w": 0.05309858322143555,
             "h": 0.23799989488389756
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6936,8 +6936,8 @@
             "w": 0.053044891357421874,
             "h": 0.2398808797200521
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6954,8 +6954,8 @@
             "w": 0.05299382209777832,
             "h": 0.24038636949327258
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6972,8 +6972,8 @@
             "w": 0.05239801406860352,
             "h": 0.24666832817925347
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -6990,8 +6990,8 @@
             "w": 0.05090808868408203,
             "h": 0.24897681342230904
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7008,8 +7008,8 @@
             "w": 0.05098490715026856,
             "h": 0.2494842529296875
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7026,8 +7026,8 @@
             "w": 0.05003371238708496,
             "h": 0.25163661109076607
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7044,8 +7044,8 @@
             "w": 0.04982142448425293,
             "h": 0.25121629503038195
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7062,8 +7062,8 @@
             "w": 0.04754471778869629,
             "h": 0.23007000817192924
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7080,8 +7080,8 @@
             "w": 0.0477752685546875,
             "h": 0.22413819630940754
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7098,8 +7098,8 @@
             "w": 0.04772968292236328,
             "h": 0.22425365447998047
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7116,8 +7116,8 @@
             "w": 0.04559869766235351,
             "h": 0.22138907114664713
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7134,8 +7134,8 @@
             "w": 0.04527139663696289,
             "h": 0.22136917114257812
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7152,8 +7152,8 @@
             "w": 0.04489259719848633,
             "h": 0.22295167711046007
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7170,8 +7170,8 @@
             "w": 0.04427804946899414,
             "h": 0.2221798578898112
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7188,8 +7188,8 @@
             "w": 0.04431414604187012,
             "h": 0.22258451249864367
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7206,8 +7206,8 @@
             "w": 0.04551553726196289,
             "h": 0.20625476837158202
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7224,8 +7224,8 @@
             "w": 0.045604276657104495,
             "h": 0.206121826171875
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7242,8 +7242,8 @@
             "w": 0.041636085510253905,
             "h": 0.19951966603597004
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7260,8 +7260,8 @@
             "w": 0.04180831909179687,
             "h": 0.21089988284640843
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7278,8 +7278,8 @@
             "w": 0.04179582595825195,
             "h": 0.21071921454535592
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7296,8 +7296,8 @@
             "w": 0.04022665023803711,
             "h": 0.2122987535264757
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7314,8 +7314,8 @@
             "w": 0.040195369720458986,
             "h": 0.21277887556287978
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7332,8 +7332,8 @@
             "w": 0.0466094970703125,
             "h": 0.2197283426920573
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7350,8 +7350,8 @@
             "w": 0.03794260025024414,
             "h": 0.21702289581298828
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7368,8 +7368,8 @@
             "w": 0.03839960098266602,
             "h": 0.2172978719075521
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7386,8 +7386,8 @@
             "w": 0.0404871940612793,
             "h": 0.22258485158284505
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7404,8 +7404,8 @@
             "w": 0.04061203002929688,
             "h": 0.22340106964111328
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7422,8 +7422,8 @@
             "w": 0.04941601753234863,
             "h": 0.2304167005750868
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7440,8 +7440,8 @@
             "w": 0.04895968437194824,
             "h": 0.23089540269639758
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7458,8 +7458,8 @@
             "w": 0.047698020935058594,
             "h": 0.22472413380940756
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7476,8 +7476,8 @@
             "w": 0.0428804874420166,
             "h": 0.20738133324517144
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7494,8 +7494,8 @@
             "w": 0.04286789894104004,
             "h": 0.20850353240966796
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7512,8 +7512,8 @@
             "w": 0.04236726760864258,
             "h": 0.20397288004557293
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7530,8 +7530,8 @@
             "w": 0.04802265167236328,
             "h": 0.20972372690836588
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7548,8 +7548,8 @@
             "w": 0.04793219566345215,
             "h": 0.20961151123046876
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7566,8 +7566,8 @@
             "w": 0.04439840316772461,
             "h": 0.21492106119791668
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7584,8 +7584,8 @@
             "w": 0.042367744445800784,
             "h": 0.21282679239908855
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7602,8 +7602,8 @@
             "w": 0.04019613265991211,
             "h": 0.20313796997070313
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7620,8 +7620,8 @@
             "w": 0.039309024810791016,
             "h": 0.1984253141615126
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7638,8 +7638,8 @@
             "w": 0.03934640884399414,
             "h": 0.19862289428710939
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7656,8 +7656,8 @@
             "w": 0.043804931640625,
             "h": 0.20830374823676215
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7674,8 +7674,8 @@
             "w": 0.043866300582885744,
             "h": 0.2084655973646376
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7692,8 +7692,8 @@
             "w": 0.03997611999511719,
             "h": 0.20219667222764756
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7710,8 +7710,8 @@
             "w": 0.03782587051391602,
             "h": 0.20164549085828992
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7728,8 +7728,8 @@
             "w": 0.03845124244689942,
             "h": 0.2010726081000434
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7746,8 +7746,8 @@
             "w": 0.039214134216308594,
             "h": 0.19889613257514105
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7764,8 +7764,8 @@
             "w": 0.040092849731445314,
             "h": 0.19851404825846355
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7782,8 +7782,8 @@
             "w": 0.040863037109375,
             "h": 0.2000300089518229
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7800,8 +7800,8 @@
             "w": 0.039125919342041016,
             "h": 0.18446061876085068
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7818,8 +7818,8 @@
             "w": 0.03998856544494629,
             "h": 0.19750754038492838
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7836,8 +7836,8 @@
             "w": 0.03771123886108398,
             "h": 0.17908956739637588
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7854,8 +7854,8 @@
             "w": 0.037502288818359375,
             "h": 0.178059811062283
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7872,8 +7872,8 @@
             "w": 0.039011907577514646,
             "h": 0.2005166795518663
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7890,8 +7890,8 @@
             "w": 0.03956127166748047,
             "h": 0.2007844712999132
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7908,8 +7908,8 @@
             "w": 0.039008283615112306,
             "h": 0.20200492011176216
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7926,8 +7926,8 @@
             "w": 0.038549613952636716,
             "h": 0.18800010681152343
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7944,8 +7944,8 @@
             "w": 0.0383051872253418,
             "h": 0.18762372334798177
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7962,8 +7962,8 @@
             "w": 0.03814764022827148,
             "h": 0.19198002285427518
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7980,8 +7980,8 @@
             "w": 0.03848905563354492,
             "h": 0.19758347405327692
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -7998,8 +7998,8 @@
             "w": 0.03849339485168457,
             "h": 0.19488406711154513
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -8016,8 +8016,8 @@
             "w": 0.04007148742675781,
             "h": 0.19302719963921441
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -8034,8 +8034,8 @@
             "w": 0.04096307754516602,
             "h": 0.1973268296983507
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -8052,8 +8052,8 @@
             "w": 0.03828763961791992,
             "h": 0.19454625447591145
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -8070,8 +8070,8 @@
             "w": 0.037250518798828125,
             "h": 0.19280052185058594
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -8088,8 +8088,8 @@
             "w": 0.03742570877075195,
             "h": 0.1931953854031033
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -9341,8 +9341,8 @@
             "w": 0.03551349639892578,
             "h": 0.2000396728515625
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -9359,8 +9359,8 @@
             "w": 0.03586416244506836,
             "h": 0.19944220648871527
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -9377,8 +9377,8 @@
             "w": 0.03590459823608398,
             "h": 0.19964103698730468
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -9395,8 +9395,8 @@
             "w": 0.03619384765625,
             "h": 0.198538335164388
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -9413,8 +9413,8 @@
             "w": 0.03585901260375977,
             "h": 0.1982126024034288
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -9431,8 +9431,8 @@
             "w": 0.03570499420166016,
             "h": 0.19899686177571616
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -9459,8 +9459,8 @@
             "w": 0.035091209411621097,
             "h": 0.19689360724555122
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -9477,8 +9477,8 @@
             "w": 0.03443264961242676,
             "h": 0.19699172973632811
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11220,8 +11220,8 @@
             "w": 0.03299417495727539,
             "h": 0.17621315850151908
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11238,8 +11238,8 @@
             "w": 0.033100128173828125,
             "h": 0.17641610039605035
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11256,8 +11256,8 @@
             "w": 0.039750099182128906,
             "h": 0.19106936984592013
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11274,8 +11274,8 @@
             "w": 0.0398468017578125,
             "h": 0.19121386210123698
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11292,8 +11292,8 @@
             "w": 0.04422540664672851,
             "h": 0.20298216078016493
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11310,8 +11310,8 @@
             "w": 0.04395947456359863,
             "h": 0.2037606981065538
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11328,8 +11328,8 @@
             "w": 0.04414772987365723,
             "h": 0.20412139892578124
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11346,8 +11346,8 @@
             "w": 0.04069752693176269,
             "h": 0.1975908915201823
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11364,8 +11364,8 @@
             "w": 0.04070854187011719,
             "h": 0.19762200249565973
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11382,8 +11382,8 @@
             "w": 0.039426565170288086,
             "h": 0.1892333984375
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11400,8 +11400,8 @@
             "w": 0.03847570419311523,
             "h": 0.193935669793023
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11418,8 +11418,8 @@
             "w": 0.03851537704467774,
             "h": 0.1927890353732639
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11436,8 +11436,8 @@
             "w": 0.03768653869628906,
             "h": 0.19712017907036675
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11454,8 +11454,8 @@
             "w": 0.038649129867553714,
             "h": 0.1969525655110677
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         },
         {
           "id": "18d42926-9978-46f1-a986-efc2d4fc26d6",
@@ -11466,8 +11466,8 @@
             "w": 0.029338312149047852,
             "h": 0.18022713131374782
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11484,8 +11484,8 @@
             "w": 0.03547534942626953,
             "h": 0.20329418182373046
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11502,8 +11502,8 @@
             "w": 0.0343989372253418,
             "h": 0.20302698347303602
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11520,8 +11520,8 @@
             "w": 0.034428882598876956,
             "h": 0.20259263780381945
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11538,8 +11538,8 @@
             "w": 0.03565483093261719,
             "h": 0.21041319105360243
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11556,8 +11556,8 @@
             "w": 0.0349334716796875,
             "h": 0.20981290605333117
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11574,8 +11574,8 @@
             "w": 0.031249141693115233,
             "h": 0.19355687035454644
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11592,8 +11592,8 @@
             "w": 0.03595433235168457,
             "h": 0.21403630574544272
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11610,8 +11610,8 @@
             "w": 0.03599824905395508,
             "h": 0.21406275431315105
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11628,8 +11628,8 @@
             "w": 0.03736400604248047,
             "h": 0.21255366007486978
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11646,8 +11646,8 @@
             "w": 0.038410615921020505,
             "h": 0.21278667449951172
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11664,8 +11664,8 @@
             "w": 0.0423466682434082,
             "h": 0.21893200344509547
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11682,8 +11682,8 @@
             "w": 0.04505100250244141,
             "h": 0.21967239379882814
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11700,8 +11700,8 @@
             "w": 0.04527578353881836,
             "h": 0.21932118733723957
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11718,8 +11718,8 @@
             "w": 0.04751033782958984,
             "h": 0.214717525906033
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         },
         {
           "id": "a8328372-d6bd-4089-b2c0-42cc9893c59a",
@@ -11730,8 +11730,8 @@
             "w": 0.02802410125732422,
             "h": 0.20382614135742189
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11748,8 +11748,8 @@
             "w": 0.04759798049926758,
             "h": 0.2146415074666341
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         },
         {
           "id": "7fa68547-deaa-4035-ad1b-5f8f236c66a7",
@@ -11760,8 +11760,8 @@
             "w": 0.028049755096435546,
             "h": 0.20354171329074436
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11778,8 +11778,8 @@
             "w": 0.04847111701965332,
             "h": 0.21739906734890407
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11796,8 +11796,8 @@
             "w": 0.04402227401733398,
             "h": 0.2129423565334744
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11814,8 +11814,8 @@
             "w": 0.04268569946289062,
             "h": 0.21793096330430772
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11832,8 +11832,8 @@
             "w": 0.04327201843261719,
             "h": 0.21289028591579862
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11850,8 +11850,8 @@
             "w": 0.043226194381713864,
             "h": 0.21270328097873265
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11868,8 +11868,8 @@
             "w": 0.043059253692626955,
             "h": 0.20894173516167536
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11886,8 +11886,8 @@
             "w": 0.044582033157348634,
             "h": 0.2144042756822374
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11904,8 +11904,8 @@
             "w": 0.044585037231445315,
             "h": 0.21440294053819445
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11922,8 +11922,8 @@
             "w": 0.044052410125732425,
             "h": 0.2303217781914605
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11940,8 +11940,8 @@
             "w": 0.042059135437011716,
             "h": 0.2321581522623698
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11958,8 +11958,8 @@
             "w": 0.04247827529907226,
             "h": 0.23181465996636286
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11976,8 +11976,8 @@
             "w": 0.04180469512939453,
             "h": 0.23415874905056425
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -11994,8 +11994,8 @@
             "w": 0.04181623458862305,
             "h": 0.23418782552083334
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12012,8 +12012,8 @@
             "w": 0.03862161636352539,
             "h": 0.2331117206149631
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12030,8 +12030,8 @@
             "w": 0.038591194152832034,
             "h": 0.23297676510281032
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12048,8 +12048,8 @@
             "w": 0.040729331970214847,
             "h": 0.21574793921576607
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12066,8 +12066,8 @@
             "w": 0.04175481796264648,
             "h": 0.2173862033420139
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12084,8 +12084,8 @@
             "w": 0.04177622795104981,
             "h": 0.21523723602294922
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12102,8 +12102,8 @@
             "w": 0.04412002563476562,
             "h": 0.2342696295844184
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12120,8 +12120,8 @@
             "w": 0.043306493759155275,
             "h": 0.22702229817708333
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12138,8 +12138,8 @@
             "w": 0.046235275268554685,
             "h": 0.21967273288302952
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12156,8 +12156,8 @@
             "w": 0.04602727890014648,
             "h": 0.23461439344618057
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12174,8 +12174,8 @@
             "w": 0.046093177795410153,
             "h": 0.2343360053168403
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12192,8 +12192,8 @@
             "w": 0.046955013275146486,
             "h": 0.23875868055555555
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12210,8 +12210,8 @@
             "w": 0.046900272369384766,
             "h": 0.2386567857530382
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12228,8 +12228,8 @@
             "w": 0.047723388671875,
             "h": 0.23591334025065105
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12246,8 +12246,8 @@
             "w": 0.044411659240722656,
             "h": 0.21362965901692707
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12264,8 +12264,8 @@
             "w": 0.04429922103881836,
             "h": 0.21263614230685765
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12282,8 +12282,8 @@
             "w": 0.047411775588989256,
             "h": 0.2554642571343316
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12300,8 +12300,8 @@
             "w": 0.04739856719970703,
             "h": 0.2554446750217014
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12318,8 +12318,8 @@
             "w": 0.04911727905273437,
             "h": 0.2502251519097222
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12336,8 +12336,8 @@
             "w": 0.049945926666259764,
             "h": 0.25016360812717015
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12354,8 +12354,8 @@
             "w": 0.05005769729614258,
             "h": 0.25030975341796874
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12372,8 +12372,8 @@
             "w": 0.05187692642211914,
             "h": 0.2666744656032986
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12390,8 +12390,8 @@
             "w": 0.05200953483581543,
             "h": 0.26705907185872396
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12408,8 +12408,8 @@
             "w": 0.05229873657226562,
             "h": 0.25326851738823786
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12426,8 +12426,8 @@
             "w": 0.051543903350830075,
             "h": 0.24626269870334203
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12444,8 +12444,8 @@
             "w": 0.053002214431762694,
             "h": 0.24866900973849826
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12462,8 +12462,8 @@
             "w": 0.057086610794067384,
             "h": 0.23378380669487847
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12480,8 +12480,8 @@
             "w": 0.056980037689208986,
             "h": 0.23367258707682292
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12498,8 +12498,8 @@
             "w": 0.048569011688232425,
             "h": 0.27188474867078993
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12516,8 +12516,8 @@
             "w": 0.05102205276489258,
             "h": 0.27547921074761283
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12534,8 +12534,8 @@
             "w": 0.05099263191223145,
             "h": 0.27538240220811633
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12552,8 +12552,8 @@
             "w": 0.05308928489685059,
             "h": 0.2659145779079861
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12570,8 +12570,8 @@
             "w": 0.0527747631072998,
             "h": 0.26579403347439234
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12588,8 +12588,8 @@
             "w": 0.050955009460449216,
             "h": 0.2779147677951389
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12606,8 +12606,8 @@
             "w": 0.05319995880126953,
             "h": 0.2872884962293837
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12624,8 +12624,8 @@
             "w": 0.05322904586791992,
             "h": 0.2874108208550347
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12642,8 +12642,8 @@
             "w": 0.051031494140625,
             "h": 0.3029876708984375
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12660,8 +12660,8 @@
             "w": 0.050979232788085936,
             "h": 0.30266876220703126
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12678,8 +12678,8 @@
             "w": 0.05465908050537109,
             "h": 0.2983390808105469
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12696,8 +12696,8 @@
             "w": 0.054022026062011716,
             "h": 0.29888280232747394
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12714,8 +12714,8 @@
             "w": 0.054018497467041016,
             "h": 0.2995905558268229
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12732,8 +12732,8 @@
             "w": 0.053999471664428714,
             "h": 0.2957320319281684
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12750,8 +12750,8 @@
             "w": 0.05398945808410645,
             "h": 0.29579094780815973
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12768,8 +12768,8 @@
             "w": 0.05431203842163086,
             "h": 0.290045166015625
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12786,8 +12786,8 @@
             "w": 0.054862022399902344,
             "h": 0.28325441148546004
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12804,8 +12804,8 @@
             "w": 0.05485687255859375,
             "h": 0.28329535590277777
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12822,8 +12822,8 @@
             "w": 0.05801267623901367,
             "h": 0.2846249050564236
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12840,8 +12840,8 @@
             "w": 0.05765047073364258,
             "h": 0.28466542561848956
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12858,8 +12858,8 @@
             "w": 0.06490116119384766,
             "h": 0.2982876247829861
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12876,8 +12876,8 @@
             "w": 0.05729522705078125,
             "h": 0.29668392605251737
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12894,8 +12894,8 @@
             "w": 0.05768899917602539,
             "h": 0.29724036322699654
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12912,8 +12912,8 @@
             "w": 0.07226839065551757,
             "h": 0.276094479031033
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12930,8 +12930,8 @@
             "w": 0.07020053863525391,
             "h": 0.276324208577474
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12948,8 +12948,8 @@
             "w": 0.08095993995666503,
             "h": 0.3171603732638889
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12966,8 +12966,8 @@
             "w": 0.07931127548217773,
             "h": 0.25490739610460067
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         },
         {
           "id": "95490793-449e-4cb5-891a-5b8b1499bf30",
@@ -12978,8 +12978,8 @@
             "w": 0.05077486038208008,
             "h": 0.24884067111545138
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -12996,8 +12996,8 @@
             "w": 0.07926654815673828,
             "h": 0.2549336751302083
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         },
         {
           "id": "0adf5ecc-f4d4-445c-ab96-dfc482c302e5",
@@ -13008,8 +13008,8 @@
             "w": 0.05075969696044922,
             "h": 0.24900470309787326
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13026,8 +13026,8 @@
             "w": 0.0798110008239746,
             "h": 0.2903650919596354
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13044,8 +13044,8 @@
             "w": 0.0798269271850586,
             "h": 0.2924997117784288
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13062,8 +13062,8 @@
             "w": 0.0709925651550293,
             "h": 0.3033590528700087
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13080,8 +13080,8 @@
             "w": 0.07951722145080567,
             "h": 0.30735185411241317
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13098,8 +13098,8 @@
             "w": 0.07983531951904296,
             "h": 0.30715442233615453
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13116,8 +13116,8 @@
             "w": 0.0763662338256836,
             "h": 0.24132300482855903
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13134,8 +13134,8 @@
             "w": 0.07696895599365235,
             "h": 0.24207204182942707
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13152,8 +13152,8 @@
             "w": 0.07515058517456055,
             "h": 0.2523156060112847
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13170,8 +13170,8 @@
             "w": 0.07487530708312988,
             "h": 0.24090406629774305
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13188,8 +13188,8 @@
             "w": 0.07492294311523437,
             "h": 0.24136386447482638
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13206,8 +13206,8 @@
             "w": 0.07173714637756348,
             "h": 0.244964599609375
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13224,8 +13224,8 @@
             "w": 0.07166867256164551,
             "h": 0.24493018256293403
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13247,8 +13247,8 @@
             "w": 0.04554834365844727,
             "h": 0.22141409979926216
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -13265,8 +13265,8 @@
             "w": 0.045545101165771484,
             "h": 0.2211160447862413
           },
-          "alarm_level": "CRITICAL",
-          "color": "red"
+          "alarm_level": "WARNING",
+          "color": "orange"
         }
       ]
     },
@@ -15516,23 +15516,23 @@
   ],
   "zones": [
     {
-      "type": "core",
+      "type": "warning",
       "points": [
         [
-          0.3025,
-          0.34444444444444444
+          0.3,
+          0.3488888888888889
         ],
         [
-          0.35375,
-          0.3622222222222222
+          0.34,
+          0.3422222222222222
         ],
         [
-          0.445,
-          0.9577777777777777
+          0.42625,
+          0.7977777777777778
         ],
         [
-          0.33375,
-          0.9666666666666667
+          0.325,
+          0.8244444444444444
         ]
       ]
     }

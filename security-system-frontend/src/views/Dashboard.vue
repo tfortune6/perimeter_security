@@ -387,9 +387,22 @@ const startRenderLoop = () => {
         const ev = events[alarmCursor.value]
         alarmCursor.value += 1
 
+        // 事件去重/节流：同一 (target + severity) 在短时间窗口内只触发一次
+        // 后端当前会按帧生成事件（约 0.04s 一条），这里做展示侧合并
+        const key = `${String(ev?.target || '')}|${String(ev?.severity || '')}`
+        const lastT = tick.__lastEventAt?.[key]
+        if (!tick.__lastEventAt) tick.__lastEventAt = {}
+
+        // 2s 内同类事件只触发一次（可按需调整）
+        if (typeof lastT === 'number' && Number(ev?.timestamp || 0) - lastT < 2.0) {
+          continue
+        }
+        tick.__lastEventAt[key] = Number(ev?.timestamp || 0)
+
         // 推送到右侧实时事件列表（最新在前）
         realtimeEvents.value.unshift(ev)
         if (realtimeEvents.value.length > 50) realtimeEvents.value.length = 50
+        window.__realtimeEvents = realtimeEvents.value
 
         // Notification 弹窗
         const isCritical = ev?.severity === 'critical'

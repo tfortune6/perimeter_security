@@ -157,6 +157,10 @@ def compute_alarms(
     zones 结构（归一化坐标）示例：
     [{"type":"core","points":[[0.1,0.2],[0.3,0.4],...]}]
 
+    新增机制：
+    - 去抖动：目标连续 N 帧在区内才确认状态切换（默认 10 帧，约 0.4s）
+    - 报警冷却：同一目标触发后进入冷却期（默认 5s），期间不新增事件
+
     产物：
     - display_overlays.json 写入 output_analysis_json_path
     - 返回 overlays + alarm_events（由调用方决定是否入库）
@@ -181,6 +185,25 @@ def compute_alarms(
         if len(poly) >= 3:
             zone_polys.append({"type": z.get("type"), "polygon": poly})
 
+    # 去抖动与冷却机制参数
+    DEBOUNCE_FRAMES = 10  # 连续 N 帧在区内才确认入侵
+    COOLDOWN_SECONDS = 5.0  # 冷却期（秒）
+
+    # 黄色警戒区逗留阈值：连续停留超过该时间才触发（防路人穿越误报）
+    WARNING_LOITER_SECONDS = 5.0
+
+    # 追踪每个目标的状态（基于临时 id）
+    # key: object_id -> {
+    #   in_core: bool,
+    #   core_consecutive: int,
+    #   last_core_alarm_ts: float,
+    #   warning_enter_ts: Optional[float],
+    #   warning_last_seen_ts: Optional[float],
+    #   warning_triggered: bool,
+    #   last_warning_alarm_ts: float,
+    # }
+    target_state: Dict[str, Dict[str, Any]] = {}
+
     overlays = []
     alarm_events = []
 
@@ -191,28 +214,38 @@ def compute_alarms(
 
         display_objects = []
         for obj in objects:
+            obj_id = obj.get("id")
             box_norm = obj.get("box_norm") or {}
             foot_pt = foot_point_from_norm(box_norm, width, height)
 
             alarm_level = None
             color = "green"
 
+            # 判断所在区域（core 优先于 warning）
+            in_core_now = False
+            in_warning_now = False
             for zone in zone_polys:
-                if point_in_polygon(foot_pt, zone["polygon"]):
-                    if zone.get("type") == "core":
-                        alarm_level = "CRITICAL"
-                        color = "red"
-                    elif zone.get("type") == "warning":
-                        alarm_level = "WARNING"
-                        color = "orange"
-                    else:
-                        alarm_level = "WARNING"
-                        color = "orange"
+                if not point_in_polygon(foot_pt, zone["polygon"]):
+                    continue
+                if zone.get("type") == "core":
+                    in_core_now = True
                     break
+                if zone.get("type") == "warning":
+                    in_warning_now = True
+
+            if in_core_now:
+                alarm_level = "CRITICAL"
+                color = "red"
+            elif in_warning_now:
+                alarm_level = "WARNING"
+                color = "orange"
+            else:
+                alarm_level = None
+                color = "green"
 
             display_objects.append(
                 {
-                    "id": obj.get("id"),
+                    "id": obj_id,
                     "class": obj.get("class"),
                     "box_norm": box_norm,
                     "alarm_level": alarm_level,
@@ -220,17 +253,81 @@ def compute_alarms(
                 }
             )
 
-            if alarm_level is not None:
-                alarm_events.append(
+            # 去抖动 + 冷却 + 黄色区逗留判定
+            if obj_id:
+                state = target_state.setdefault(
+                    obj_id,
                     {
-                        "event_id": str(uuid4()),
-                        "video_id": video_id,
-                        "video_timestamp": float(timestamp),
-                        "object_type": obj.get("class"),
-                        "threat_level": alarm_level,
-                        "snapshot_path": None,
-                    }
+                        "in_core": False,
+                        "core_consecutive": 0,
+                        "last_core_alarm_ts": -1.0,
+                        "warning_enter_ts": None,
+                        "warning_last_seen_ts": None,
+                        "warning_triggered": False,
+                        "last_warning_alarm_ts": -1.0,
+                    },
                 )
+
+                ts = float(timestamp)
+
+                # --- core 区：去抖动 + 冷却 ---
+                if in_core_now:
+                    state["core_consecutive"] += 1
+                else:
+                    state["core_consecutive"] = max(int(state.get("core_consecutive") or 0) - 1, 0)
+
+                if (
+                    (not state.get("in_core"))
+                    and in_core_now
+                    and int(state.get("core_consecutive") or 0) >= DEBOUNCE_FRAMES
+                ):
+                    state["in_core"] = True
+                    if ts - float(state.get("last_core_alarm_ts") or -1.0) >= COOLDOWN_SECONDS:
+                        alarm_events.append(
+                            {
+                                "event_id": str(uuid4()),
+                                "video_id": video_id,
+                                "video_timestamp": ts,
+                                "object_type": obj.get("class"),
+                                "threat_level": "CRITICAL",
+                                "snapshot_path": None,
+                            }
+                        )
+                        state["last_core_alarm_ts"] = ts
+                elif state.get("in_core") and not in_core_now:
+                    state["in_core"] = False
+
+                # --- warning 区：逗留阈值 + 冷却 ---
+                # 规则：目标在黄色区连续停留时间 t > WARNING_LOITER_SECONDS 才触发；短暂穿越视为路人
+                if in_warning_now and (not in_core_now):
+                    if state.get("warning_enter_ts") is None:
+                        state["warning_enter_ts"] = ts
+                        state["warning_triggered"] = False
+                    state["warning_last_seen_ts"] = ts
+
+                    enter_ts = float(state.get("warning_enter_ts") or ts)
+                    dwell = ts - enter_ts
+
+                    if (not state.get("warning_triggered")) and dwell >= WARNING_LOITER_SECONDS:
+                        # 逗留超过阈值，触发一次 WARNING（并进入冷却）
+                        if ts - float(state.get("last_warning_alarm_ts") or -1.0) >= COOLDOWN_SECONDS:
+                            alarm_events.append(
+                                {
+                                    "event_id": str(uuid4()),
+                                    "video_id": video_id,
+                                    "video_timestamp": ts,
+                                    "object_type": obj.get("class"),
+                                    "threat_level": "WARNING",
+                                    "snapshot_path": None,
+                                }
+                            )
+                            state["last_warning_alarm_ts"] = ts
+                        state["warning_triggered"] = True
+                else:
+                    # 离开 warning（或进入 core）：如果未达到逗留阈值，视为路人，直接清空计时
+                    state["warning_enter_ts"] = None
+                    state["warning_last_seen_ts"] = None
+                    state["warning_triggered"] = False
 
         overlays.append({"frame_id": frame_id, "timestamp": timestamp, "objects": display_objects})
 
