@@ -105,11 +105,32 @@ const fetchAlarmEvents = async () => {
   if (!currentSourceId.value) return
 
   try {
-    const resp = await getAlarmsBySourceId(currentSourceId.value, 1, 2000)
-    const list = resp?.list || resp?.data?.list || []
-    const items = Array.isArray(list) ? list : []
+    const pageSize = 100
+    const maxPages = 50 // 最多拉取 5000 条，避免无限循环
 
-    const normalized = items
+    let page = 1
+    const collected = []
+
+    while (page <= maxPages) {
+      const resp = await getAlarmsBySourceId(currentSourceId.value, page, pageSize)
+      // axios interceptor 已解包，resp 可能是 {list,total} 或者直接是数组
+      const raw = resp?.list || resp?.data?.list || resp?.data?.data?.list || resp?.data || resp
+      const items = Array.isArray(raw) ? raw : []
+
+      if (!items.length) break
+
+      for (const it of items) {
+        if (String(it?.videoId || '') === String(currentSourceId.value)) {
+          collected.push(it)
+        }
+      }
+
+      // 如果这一页已经不足 pageSize，认为到尾
+      if (items.length < pageSize) break
+      page += 1
+    }
+
+    const normalized = collected
       .map((x) => ({
         ...x,
         timestamp: Number(x.time || 0),
@@ -119,9 +140,12 @@ const fetchAlarmEvents = async () => {
 
     allAlarmEvents.value = normalized
     console.log('[fetchAlarmEvents] loaded events:', normalized.length)
+    // 调试：暴露到 window
+    window.__allAlarmEvents = normalized
   } catch (e) {
     console.error('[fetchAlarmEvents] error:', e)
     allAlarmEvents.value = []
+    window.__allAlarmEvents = []
   }
 }
 
@@ -342,6 +366,14 @@ const startRenderLoop = () => {
     if (!frames.length) return
 
     const t = Number(video.currentTime || 0)
+
+    // loop/回退检测：currentTime 变小表示重新开始播放
+    if (typeof tick.__lastT === 'number' && t + 0.05 < tick.__lastT) {
+      alarmCursor.value = 0
+      realtimeEvents.value = []
+    }
+    tick.__lastT = t
+
     const idx = findNearestFrameIndex(t)
     if (idx < 0) return
 

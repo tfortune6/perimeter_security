@@ -7,4 +7,4 @@ export const getDashboardOverlays = (sourceId) => http.get('/dashboard/overlays'
 export const getDashboardZones = (sourceId) => http.get('/zones', { params: { sourceId } })
 
 export const getAlarmsBySourceId = (sourceId, page = 1, pageSize = 1000) =>
-  http.get('/alarms', { params: { page, pageSize, query: sourceId } })
+  http.get('/alarms', { params: { page, pageSize } })

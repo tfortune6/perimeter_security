@@ -20,6 +20,7 @@ def _alarm_to_dict(a: AlarmEvent) -> dict:
         "target": a.object_type.value,
         "severity": "critical" if a.threat_level == 1 else "warning",
         "status": "pending",  # 暂时固定，后续可扩展状态字段
+        "videoId": str(a.video_id),
     }
 
 
