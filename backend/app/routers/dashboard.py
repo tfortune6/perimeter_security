@@ -44,6 +44,7 @@ def get_dashboard_overlays(
             data = json.load(f)
         # 兼容新旧结构：新结构是 {overlays: [...]}，旧结构可能是 {frames: [...]}
         overlays = data.get("overlays") or data.get("frames") or []
-        return {"code": 0, "message": "ok", "data": {"overlays": overlays}}
+        zones = data.get("zones") or []
+        return {"code": 0, "message": "ok", "data": {"overlays": overlays, "zones": zones}}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"读取分析结果失败: {e}")
