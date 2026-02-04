@@ -79,29 +79,51 @@ def analyze_video(video_path: str, video_id: str) -> Dict[str, Any]:
 
         timestamp_sec = frame_id / fps
 
-        # 使用 predict 并降低置信度阈值，避免因默认 0.25 过滤掉目标
-        results = model.predict(frame, conf=0.25, verbose=False)
+        # 使用 Ultralytics 内置 track（ByteTrack）输出稳定 track_id
+        # 只需要 track_id 用于后续去抖动/冷却/逗留判定
+        results = model.track(
+            frame,
+            conf=0.25,
+            verbose=False,
+            persist=True,
+            tracker="bytetrack.yaml",
+        )
+
         objects: List[Dict[str, Any]] = []
 
         for r in results:
-            boxes = r.boxes
-            if boxes is None:
+            boxes = getattr(r, "boxes", None)
+            if boxes is None or len(boxes) == 0:
                 continue
 
-            for box in boxes:
-                cls = int(box.cls)
+            # Ultralytics Boxes 上可用属性：cls, xyxy, id
+            clss = boxes.cls
+            xyxys = boxes.xyxy
+            ids = getattr(boxes, "id", None)
+
+            for i in range(len(boxes)):
+                cls = int(clss[i])
 
                 # 只保留 Person (0) 和 Vehicle (2)
                 if cls not in (0, 2):
                     continue
 
-                xyxy = box.xyxy[0].tolist()
+                xyxy = xyxys[i].tolist()
                 norm_box = normalize_bbox(xyxy, width, height)
+
+                track_id = None
+                if ids is not None:
+                    try:
+                        track_id = int(ids[i])
+                    except Exception:
+                        track_id = None
+
+                # fallback：如果该帧没给 id，就退化为 uuid
+                obj_id = f"t{track_id}" if track_id is not None else str(uuid4())
 
                 objects.append(
                     {
-                        # TODO: 接入 ByteTrack 后，这里应写入稳定的 track_id
-                        "id": str(uuid4()),
+                        "id": obj_id,
                         "class": "Person" if cls == 0 else "Vehicle",
                         "box_norm": norm_box,
                     }
