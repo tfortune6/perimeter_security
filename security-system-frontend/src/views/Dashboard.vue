@@ -1,8 +1,8 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import AppLayout from '../components/layout/AppLayout.vue'
-import { getDashboardEvents, getDashboardOverlays, getDashboardZones } from '../api/dashboard'
+import { getDashboardOverlays, getDashboardZones } from '../api/dashboard'
 import { getDemoVideo } from '../api/videos'
 import { getSources } from '../api/config'
 import { getSystemStatus, updateSystemStatus } from '../api/system'
@@ -19,93 +19,29 @@ const loadingVideo = ref(false)
 const demoVideoUrl = ref('')
 let demoVideoObjectUrl = null
 
-const events = ref([])
-const overlays = ref({ boxes: [] })
 const zones = ref([])
-const loadingEvents = ref(false)
 const loadingZones = ref(false)
 
 const sources = ref([])
 const currentSourceId = ref('')
 
-let timer = null
-
 const videoWrapRef = ref(null)
+const videoRef = ref(null)
+const canvasRef = ref(null)
+
+const overlayData = ref(null) // 后端返回的完整 JSON（含 frames）
+const overlayFrames = ref([]) // overlayData.frames
+const overlayTimestamps = ref([]) // 用于二分查找的时间数组（秒）
+
+const rafId = ref(0)
+const resizeObs = ref(null)
+
 const isFullscreen = ref(false)
 
-const fetchDemoVideo = async () => {
-  loadingVideo.value = true
-  try {
-    const video = await getDemoVideo()
-    demoVideo.value = video
-
-    if (demoVideoObjectUrl) {
-      URL.revokeObjectURL(demoVideoObjectUrl)
-      demoVideoObjectUrl = null
-    }
-
-    if (video) {
-      // 优先从 IndexedDB 取本地文件
-      const file = await getVideoFile(video.id)
-      if (file) {
-        demoVideoObjectUrl = URL.createObjectURL(file)
-        demoVideoUrl.value = demoVideoObjectUrl
-      } else {
-        // 其次用 mock 的 previewUrl
-        demoVideoUrl.value = video.previewUrl || ''
-      }
-    } else {
-      demoVideoUrl.value = ''
-    }
-  } catch {
-    demoVideo.value = null
-    demoVideoUrl.value = ''
-  } finally {
-    loadingVideo.value = false
-  }
-}
-
-const fetchEvents = async () => {
-  loadingEvents.value = true
-  try {
-    events.value = await getDashboardEvents(20)
-  } catch (e) {
-    ElMessage.error(e?.message || '加载实时事件失败')
-  } finally {
-    loadingEvents.value = false
-  }
-}
-
-const fetchOverlays = async () => {
-  if (!currentSourceId.value) return
-  try {
-    overlays.value = await getDashboardOverlays(currentSourceId.value)
-  } catch {
-    overlays.value = { boxes: [] }
-  }
-}
-
-const fetchZones = async () => {
-  if (!currentSourceId.value) return
-  loadingZones.value = true
-  try {
-    zones.value = await getDashboardZones(currentSourceId.value)
-  } catch {
-    zones.value = []
-  } finally {
-    loadingZones.value = false
-  }
-}
-
-const initSource = async () => {
-  try {
-    sources.value = await getSources()
-    const status = await getSystemStatus()
-    currentSourceId.value = status.currentSourceId || sources.value[0]?.id || 'cam1'
-  } catch {
-    currentSourceId.value = 'cam1'
-  }
-}
+const currentSourceName = computed(() => {
+  const s = sources.value.find((x) => x.id === currentSourceId.value)
+  return s?.name || currentSourceId.value || '-'
+})
 
 const syncFullscreenState = () => {
   const el = videoWrapRef.value
@@ -131,6 +67,227 @@ const toggleFullscreen = async () => {
   }
 }
 
+const initSource = async () => {
+  try {
+    sources.value = await getSources()
+    const status = await getSystemStatus()
+    currentSourceId.value = status.currentSourceId || sources.value[0]?.id || ''
+  } catch {
+    currentSourceId.value = ''
+  }
+}
+
+const fetchZones = async () => {
+  if (!currentSourceId.value) return
+  loadingZones.value = true
+  try {
+    zones.value = await getDashboardZones(currentSourceId.value)
+  } catch {
+    zones.value = []
+  } finally {
+    loadingZones.value = false
+  }
+}
+
+const fetchDemoVideo = async () => {
+  loadingVideo.value = true
+  try {
+    const video = await getDemoVideo()
+    demoVideo.value = video
+
+    if (demoVideoObjectUrl) {
+      URL.revokeObjectURL(demoVideoObjectUrl)
+      demoVideoObjectUrl = null
+    }
+
+    if (video) {
+      const file = await getVideoFile(video.id)
+      if (file) {
+        demoVideoObjectUrl = URL.createObjectURL(file)
+        demoVideoUrl.value = demoVideoObjectUrl
+      } else {
+        demoVideoUrl.value = video.previewUrl || ''
+      }
+    } else {
+      demoVideoUrl.value = ''
+    }
+  } catch {
+    demoVideo.value = null
+    demoVideoUrl.value = ''
+  } finally {
+    loadingVideo.value = false
+  }
+}
+
+const fetchOverlays = async () => {
+  overlayData.value = null
+  overlayFrames.value = []
+  overlayTimestamps.value = []
+
+  if (!currentSourceId.value) return
+
+  try {
+    // 后端支持 video_id/sourceId，这里沿用现有调用传 sourceId
+    const resp = await getDashboardOverlays(currentSourceId.value)
+
+    // 兼容后端返回 {code:0, data:{overlays:[...]}} 结构
+    const overlays = resp?.data?.overlays || resp?.data?.frames || []
+    overlayFrames.value = overlays
+    overlayTimestamps.value = overlays.map((f) => Number(f.timestamp || 0))
+    overlayData.value = resp?.data || resp
+  } catch (e) {
+    // 202：分析未完成；其它错误提示
+    const status = e?.response?.status
+    if (status === 202) {
+      // 静默，等待分析完成后可手动刷新/重进
+      overlayData.value = null
+      overlayFrames.value = []
+      overlayTimestamps.value = []
+    } else {
+      ElMessage.error(e?.response?.data?.detail || e?.message || '加载 overlays 失败')
+    }
+  }
+}
+
+const ensureCanvasSize = () => {
+  const canvas = canvasRef.value
+  const wrap = videoWrapRef.value
+  if (!canvas || !wrap) return
+
+  const dpr = window.devicePixelRatio || 1
+  const w = Math.max(1, wrap.clientWidth)
+  const h = Math.max(1, wrap.clientHeight)
+
+  const cw = Math.round(w * dpr)
+  const ch = Math.round(h * dpr)
+
+  if (canvas.width !== cw || canvas.height !== ch) {
+    canvas.width = cw
+    canvas.height = ch
+  }
+
+  const ctx = canvas.getContext('2d')
+  if (ctx) ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+}
+
+const findNearestFrameIndex = (t) => {
+  const arr = overlayTimestamps.value
+  const n = arr.length
+  if (!n) return -1
+
+  // 二分查找最接近 t 的 index
+  let lo = 0
+  let hi = n - 1
+  while (lo < hi) {
+    const mid = Math.floor((lo + hi) / 2)
+    if (arr[mid] < t) lo = mid + 1
+    else hi = mid
+  }
+
+  const i = lo
+  if (i <= 0) return 0
+  if (i >= n) return n - 1
+
+  const a = arr[i - 1]
+  const b = arr[i]
+  return Math.abs(t - a) <= Math.abs(t - b) ? i - 1 : i
+}
+
+const drawFrame = (frame) => {
+  const canvas = canvasRef.value
+  const wrap = videoWrapRef.value
+  if (!canvas || !wrap) return
+
+  const ctx = canvas.getContext('2d')
+  if (!ctx) return
+
+  const w = wrap.clientWidth
+  const h = wrap.clientHeight
+
+  ctx.clearRect(0, 0, w, h)
+
+  const objects = Array.isArray(frame?.objects) ? frame.objects : []
+  for (const obj of objects) {
+    const box = obj?.box
+    if (!box) continue
+
+    const x = Number(box.x || 0) * w
+    const y = Number(box.y || 0) * h
+    const bw = Number(box.w || 0) * w
+    const bh = Number(box.h || 0) * h
+
+    const alarmLevel = obj?.alarm_level
+    const isAlarm = alarmLevel === 1 || alarmLevel === 2
+
+    ctx.lineWidth = 2
+    ctx.strokeStyle = isAlarm ? '#ef4444' : '#22c55e'
+    ctx.strokeRect(x, y, bw, bh)
+
+    const label = `${obj?.id?.slice?.(0, 8) || ''} ${obj?.class || ''}`.trim()
+    if (label) {
+      ctx.font = '12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace'
+      ctx.fillStyle = 'rgba(0,0,0,0.55)'
+      const pad = 4
+      const tw = ctx.measureText(label).width
+      ctx.fillRect(x, Math.max(0, y - 18), tw + pad * 2, 18)
+
+      ctx.fillStyle = '#fff'
+      ctx.fillText(label, x + pad, Math.max(12, y - 5))
+    }
+  }
+}
+
+const startRenderLoop = () => {
+  cancelRenderLoop()
+
+  const tick = () => {
+    rafId.value = requestAnimationFrame(tick)
+
+    const video = videoRef.value
+    if (!video || video.paused || video.ended) return
+
+    ensureCanvasSize()
+
+    const frames = overlayFrames.value
+    if (!frames.length) return
+
+    const t = Number(video.currentTime || 0)
+    const idx = findNearestFrameIndex(t)
+    if (idx < 0) return
+
+    const frame = frames[idx]
+    drawFrame(frame)
+  }
+
+  rafId.value = requestAnimationFrame(tick)
+}
+
+const cancelRenderLoop = () => {
+  if (rafId.value) {
+    cancelAnimationFrame(rafId.value)
+    rafId.value = 0
+  }
+}
+
+const onVideoPlay = () => startRenderLoop()
+const onVideoPause = () => {
+  cancelRenderLoop()
+  // 暂停时保留最后一帧绘制结果，不清空
+}
+const onVideoSeeked = () => {
+  // 拖动进度条时立即绘制一次
+  ensureCanvasSize()
+  const video = videoRef.value
+  if (!video) return
+  const frames = overlayFrames.value
+  if (!frames.length) return
+
+  const t = Number(video.currentTime || 0)
+  const idx = findNearestFrameIndex(t)
+  if (idx < 0) return
+  drawFrame(frames[idx])
+}
+
 watch(currentSourceId, async (val, old) => {
   if (!val || val === old) return
   try {
@@ -138,61 +295,50 @@ watch(currentSourceId, async (val, old) => {
   } catch {
     // 忽略
   }
+
   await fetchDemoVideo()
   await fetchOverlays()
   await fetchZones()
+
+  await nextTick()
+  ensureCanvasSize()
 })
 
 onMounted(async () => {
   await initSource()
-
   await fetchDemoVideo()
   await fetchOverlays()
   await fetchZones()
-  await fetchEvents()
 
   document.addEventListener('fullscreenchange', syncFullscreenState)
 
-  // 取消 3 秒轮询刷新：改为按需手动刷新/切换源刷新
-  timer = null
+  await nextTick()
+  ensureCanvasSize()
+
+  // resize 监听：保持 canvas 分辨率与容器一致
+  if (window.ResizeObserver) {
+    resizeObs.value = new ResizeObserver(() => ensureCanvasSize())
+    if (videoWrapRef.value) resizeObs.value.observe(videoWrapRef.value)
+  } else {
+    window.addEventListener('resize', ensureCanvasSize)
+  }
 })
 
 onBeforeUnmount(() => {
-  if (timer) clearInterval(timer)
+  cancelRenderLoop()
+
   if (demoVideoObjectUrl) URL.revokeObjectURL(demoVideoObjectUrl)
   document.removeEventListener('fullscreenchange', syncFullscreenState)
-})
 
-const levelClass = (lvl) => {
-  if (lvl === 'danger') return 'event-danger'
-  if (lvl === 'warning') return 'event-warning'
-  return 'event-normal'
-}
-
-const pillClass = (lvl) => {
-  if (lvl === 'danger') return 'pill-danger'
-  if (lvl === 'warning') return 'pill-warning'
-  return 'pill-normal'
-}
-
-const bboxClass = (lvl) => {
-  if (lvl === 'danger') return 'bbox-danger'
-  if (lvl === 'warning') return 'bbox-warning'
-  return 'bbox-success'
-}
-
-const zoneClass = (z) => {
-  const cls = ['zone']
-  if (z.type === 'warning') cls.push('zone-warning')
-  else cls.push('zone-core')
-  return cls.join(' ')
-}
-
-const zonePoints = (z) => (z.polygonPoints || []).map(([x, y]) => `${x},${y}`).join(' ')
-
-const currentSourceName = computed(() => {
-  const s = sources.value.find((x) => x.id === currentSourceId.value)
-  return s?.name || currentSourceId.value || '-'
+  if (resizeObs.value) {
+    try {
+      resizeObs.value.disconnect()
+    } catch {
+      // ignore
+    }
+  } else {
+    window.removeEventListener('resize', ensureCanvasSize)
+  }
 })
 </script>
 
@@ -204,13 +350,19 @@ const currentSourceName = computed(() => {
 
         <video
           v-if="demoVideoUrl"
+          ref="videoRef"
           class="video-player"
           :src="demoVideoUrl"
           autoplay
           muted
           loop
           playsinline
+          @play="onVideoPlay"
+          @pause="onVideoPause"
+          @seeked="onVideoSeeked"
         />
+
+        <canvas ref="canvasRef" class="overlay-canvas" />
 
         <div class="video-tag">
           <div class="video-tag-line">{{ currentSourceName }}</div>
@@ -223,29 +375,9 @@ const currentSourceName = computed(() => {
           </el-select>
         </div>
 
-        <svg class="zone-layer" viewBox="0 0 800 450" preserveAspectRatio="none">
-          <polygon v-for="z in zones" :key="z.id" :points="zonePoints(z)" :class="zoneClass(z)" />
-        </svg>
-
-        <div
-          v-for="b in overlays.boxes"
-          :key="b.id"
-          class="bbox"
-          :class="bboxClass(b.level)"
-          :style="{
-            left: `${b.x * 100}%`,
-            top: `${b.y * 100}%`,
-            width: `${b.w * 100}%`,
-            height: `${b.h * 100}%`,
-          }"
-        >
-          <div
-            class="bbox-label"
-            :class="b.level === 'warning' ? 'bbox-label-warning' : b.level === 'success' ? 'bbox-label-success' : ''"
-          >
-            {{ b.label }}: {{ Math.round(b.score * 100) }}%
-          </div>
-        </div>
+        <div v-if="loadingVideo" class="video-loading">加载视频...</div>
+        <div v-else-if="!overlayFrames.length" class="video-loading" style="bottom: 46px">分析中或无检测数据</div>
+        <div v-if="loadingZones" class="video-loading" style="bottom: 76px">加载区域...</div>
 
         <div class="crosshair">
           <div class="crosshair-box">
@@ -253,58 +385,27 @@ const currentSourceName = computed(() => {
             <div class="crosshair-v"></div>
           </div>
         </div>
-
-        <div v-if="loadingVideo" class="video-loading">加载演示源...</div>
-        <div v-if="loadingZones" class="video-loading" style="bottom: 46px">加载区域...</div>
-      </div>
-
-      <div class="video-controls">
-        <div class="video-controls-left">
-          <el-button text class="ctrl-btn">▶</el-button>
-          <el-button text class="ctrl-btn muted">■</el-button>
-          <div class="progress">
-            <div class="progress-bar"></div>
-            <div class="progress-dot"></div>
-          </div>
-          <span class="live">LIVE</span>
-        </div>
-        <div class="video-controls-right">
-          <el-button text class="ctrl-btn small" :loading="loadingVideo" @click="fetchDemoVideo">刷新演示源</el-button>
-          <el-button text class="ctrl-btn small" :loading="loadingZones" @click="fetchZones">刷新区域</el-button>
-          <el-button text class="ctrl-btn small" @click="toggleFullscreen">{{ isFullscreen ? '退出全屏' : 'Fullscreen' }}</el-button>
-        </div>
       </div>
 
       <div class="events">
         <div class="events-header">
           <div class="events-title">实时事件 (Events)</div>
-          <el-button text class="ctrl-btn small" :loading="loadingEvents" @click="fetchEvents">刷新</el-button>
         </div>
-        <div class="events-body" v-loading="loadingEvents">
-          <router-link
-            v-for="e in events"
-            :key="e.id"
-            class="event"
-            :class="levelClass(e.level)"
-            :to="{ path: '/history', query: { alarmId: e.alarmId } }"
-          >
-            <div class="event-top">
-              <span class="pill" :class="pillClass(e.level)">{{ e.type }}</span>
-              <span class="event-time">{{ e.time }}</span>
-            </div>
-            <div class="event-content">
-              <div class="event-thumb" :style="{ backgroundImage: `url('${e.thumbUrl}')` }"></div>
-              <div class="event-text">
-                <div class="event-name">{{ e.type === 'INTRUSION' ? '非法入侵检测' : '实时事件' }}</div>
-                <div class="event-zone">{{ e.zone }}</div>
-              </div>
-            </div>
-          </router-link>
-
-          <div v-if="!loadingEvents && events.length === 0" class="empty">暂无实时事件</div>
+        <div class="events-body">
+          <div class="empty">已切换为预处理回放模式：实时事件面板待接入</div>
         </div>
         <div class="events-footer">
           <router-link class="view-all" to="/history">查看全部告警</router-link>
+        </div>
+      </div>
+
+      <div class="video-controls">
+        <div class="video-controls-left">
+          <span class="live">PLAYBACK</span>
+        </div>
+        <div class="video-controls-right">
+          <el-button text class="ctrl-btn small" @click="fetchOverlays">刷新检测结果</el-button>
+          <el-button text class="ctrl-btn small" @click="toggleFullscreen">{{ isFullscreen ? '退出全屏' : 'Fullscreen' }}</el-button>
         </div>
       </div>
     </div>
@@ -344,30 +445,16 @@ const currentSourceName = computed(() => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
-.zone-layer {
+.overlay-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
-}
-
-.zone {
-  stroke-width: 2;
-}
-
-.zone-core {
-  fill: rgba(239, 68, 68, 0.14);
-  stroke: rgba(239, 68, 68, 0.75);
-}
-
-.zone-warning {
-  fill: rgba(245, 158, 11, 0.12);
-  stroke: rgba(245, 158, 11, 0.75);
 }
 
 .source-switch {
@@ -424,42 +511,6 @@ const currentSourceName = computed(() => {
   color: #fff;
 }
 
-.bbox {
-  position: absolute;
-  border: 2px solid;
-  z-index: 5;
-}
-.bbox-danger {
-  border-color: #ef4444;
-  box-shadow: 0 0 15px rgba(239, 68, 68, 0.5);
-}
-.bbox-warning {
-  border-color: #f59e0b;
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
-}
-.bbox-success {
-  border-color: #10b981;
-  box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-}
-.bbox-label {
-  position: absolute;
-  top: -28px;
-  left: 0;
-  background: #ef4444;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 4px 8px;
-  border-radius: 4px 4px 0 0;
-}
-.bbox-label-warning {
-  background: #f59e0b;
-  color: #111;
-}
-.bbox-label-success {
-  background: #10b981;
-}
-
 .crosshair {
   position: absolute;
   inset: 0;
@@ -470,12 +521,14 @@ const currentSourceName = computed(() => {
   opacity: 0.3;
   z-index: 4;
 }
+
 .crosshair-box {
   width: 32px;
   height: 32px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   position: relative;
 }
+
 .crosshair-h {
   position: absolute;
   top: 50%;
@@ -484,6 +537,7 @@ const currentSourceName = computed(() => {
   height: 1px;
   background: rgba(255, 255, 255, 0.5);
 }
+
 .crosshair-v {
   position: absolute;
   left: 50%;
@@ -502,50 +556,27 @@ const currentSourceName = computed(() => {
   background: #1c252e;
   border-top: 1px solid #2a3642;
 }
+
 .video-controls-left,
 .video-controls-right {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .ctrl-btn {
   color: #fff;
 }
-.ctrl-btn.muted {
-  color: #9dabb9;
-}
+
 .ctrl-btn.small {
   font-size: 12px;
   color: #cbd5e1;
 }
-.progress {
-  position: relative;
-  width: 120px;
-  height: 6px;
-  background: #334155;
-  border-radius: 999px;
-}
-.progress-bar {
-  position: absolute;
-  inset: 0;
-  background: #137fec;
-  border-radius: 999px;
-}
-.progress-dot {
-  position: absolute;
-  right: -2px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 12px;
-  height: 12px;
-  background: #fff;
-  border-radius: 999px;
-}
+
 .live {
   font-size: 12px;
   color: #cbd5e1;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
-    'Courier New', monospace;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
 }
 
 .events {
@@ -555,6 +586,7 @@ const currentSourceName = computed(() => {
   background: #1c252e;
   border-left: 1px solid #2a3642;
 }
+
 .events-header {
   height: 52px;
   padding: 0 12px;
@@ -563,102 +595,24 @@ const currentSourceName = computed(() => {
   justify-content: space-between;
   border-bottom: 1px solid #2a3642;
 }
+
 .events-title {
   font-size: 13px;
   font-weight: 700;
   color: #fff;
 }
+
 .events-body {
   flex: 1;
   overflow: auto;
   padding: 12px;
 }
-.event {
-  display: block;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #2a3642;
-  background: #101922;
-  color: inherit;
-  text-decoration: none;
-}
-.event + .event {
-  margin-top: 12px;
-}
-.event-danger {
-  border-color: rgba(239, 68, 68, 0.3);
-}
-.event-warning {
-  border-color: rgba(245, 158, 11, 0.3);
-}
-.event-normal {
-  border-color: rgba(148, 163, 184, 0.25);
-}
-.event-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-.pill {
-  font-size: 10px;
-  font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid transparent;
-}
-.pill-danger {
-  color: #ef4444;
-  background: rgba(239, 68, 68, 0.2);
-  border-color: rgba(239, 68, 68, 0.2);
-}
-.pill-warning {
-  color: #f59e0b;
-  background: rgba(245, 158, 11, 0.2);
-  border-color: rgba(245, 158, 11, 0.2);
-}
-.pill-normal {
-  color: #94a3b8;
-  background: rgba(148, 163, 184, 0.12);
-  border-color: rgba(148, 163, 184, 0.12);
-}
-.event-time {
-  font-size: 12px;
-  color: #94a3b8;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono',
-    'Courier New', monospace;
-}
-.event-content {
-  display: flex;
-  gap: 10px;
-}
-.event-thumb {
-  width: 64px;
-  height: 64px;
-  border-radius: 8px;
-  background-size: cover;
-  background-position: center;
-  border: 1px solid #2a3642;
-}
-.event-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 6px;
-}
-.event-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-}
-.event-zone {
-  font-size: 12px;
-  color: #94a3b8;
-}
+
 .events-footer {
   padding: 12px;
   border-top: 1px solid #2a3642;
 }
+
 .view-all {
   display: block;
   text-align: center;
@@ -669,6 +623,7 @@ const currentSourceName = computed(() => {
   text-decoration: none;
   font-size: 12px;
 }
+
 .empty {
   padding: 12px;
   color: #9dabb9;

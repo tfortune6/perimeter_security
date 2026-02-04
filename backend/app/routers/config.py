@@ -207,12 +207,69 @@ def delete_zone(zone_id: str, db: Session = Depends(get_sqlmodel_db)):
 
 @router.post("/config/save")
 def save_config(sourceId: Optional[str] = None, db: Session = Depends(get_sqlmodel_db)):
-    # 演示接口：返回保存时间
+    if not sourceId:
+        raise HTTPException(status_code=400, detail="sourceId 必需")
+
+    try:
+        source_uuid = UUID(sourceId)
+    except Exception:
+        raise HTTPException(status_code=400, detail="sourceId 格式不正确")
+
+    video = db.get(VideoSource, source_uuid)
+    if not video:
+        raise HTTPException(status_code=404, detail="视频不存在")
+
+    if not video.raw_tracks_path:
+        raise HTTPException(status_code=400, detail="该视频尚未完成特征提取，请稍后再试")
+
+    # 读取当前防区
+    zones = db.exec(select(Zone).where(Zone.source_id == source_uuid)).all()
+    zones_payload = [
+        {"type": z.type, "points": z.polygon_points} for z in zones
+    ]
+
+    # 第二阶段：报警规则计算
+    from app.services.video_analysis import compute_alarms
+    from app.models import AlarmEvent, ThreatLevel, ObjectType
+    from sqlmodel import Session
+    from app.core.database import sync_engine
+
+    analysis_json_path = f"analysis_results/{video.video_id}.json"
+    result = compute_alarms(
+        video_id=str(video.video_id),
+        video_path=video.file_path,
+        raw_tracks_path=video.raw_tracks_path,
+        zones=zones_payload,
+        output_analysis_json_path=analysis_json_path,
+    )
+
+    # 清理旧报警记录并写入新记录（事务安全）
+    from sqlalchemy import delete
+    with Session(sync_engine) as tx:
+        tx.exec(delete(AlarmEvent).where(AlarmEvent.video_id == video.video_id))
+        for ev in result.get("alarm_events") or []:
+            alarm = AlarmEvent(
+                event_id=UUID(ev["event_id"]),
+                video_id=UUID(ev["video_id"]),
+                video_timestamp=ev["video_timestamp"],
+                object_type=ObjectType.PERSON if ev["object_type"] == "Person" else ObjectType.VEHICLE,
+                threat_level=ThreatLevel.CRITICAL if ev["threat_level"] == "CRITICAL" else ThreatLevel.WARNING,
+                snapshot_path=ev.get("snapshot_path") or "",
+            )
+            tx.add(alarm)
+        tx.commit()
+
+    # 更新 video.analysis_json_path
+    video.analysis_json_path = analysis_json_path
+    db.add(video)
+    db.commit()
+
     return {
         "code": 0,
         "message": "ok",
         "data": {
             "sourceId": sourceId,
             "savedAt": datetime.now(tz=timezone.utc).isoformat(),
+            "alarmCount": result.get("alarm_count", 0),
         },
     }

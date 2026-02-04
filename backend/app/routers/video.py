@@ -1,15 +1,17 @@
 import os
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import Optional
+from typing import Optional, List
+from uuid import UUID
 
 import cv2
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
+from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, UploadFile
 from sqlmodel import Session, select
 
 from app.core.config import settings
-from app.core.database import get_sqlmodel_db
-from app.models import AlarmEvent, SystemSettings, VideoSource, Zone, ZoneConfig
+from app.core.database import get_sqlmodel_db, sync_engine
+from app.models import AlarmEvent, AnalysisStatus, SystemSettings, VideoSource, Zone, ZoneConfig
+from app.services.video_analysis import analyze_video
 
 router = APIRouter(tags=["videos"])
 
@@ -62,7 +64,11 @@ def _to_ui_dict(v: VideoSource) -> dict:
 
 
 @router.post("/videos/upload")
-async def upload_video(file: UploadFile = File(...), db: Session = Depends(get_sqlmodel_db)):
+async def upload_video(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_sqlmodel_db),
+):
     filename = file.filename or ""
     ext = os.path.splitext(filename)[1].lower()
     if ext not in ALLOWED_EXT:
@@ -105,10 +111,43 @@ async def upload_video(file: UploadFile = File(...), db: Session = Depends(get_s
         ext=ext.replace(".", ""),
         size=_format_size(size_bytes),
         is_demo=False,
+        analysis_status=AnalysisStatus.PROCESSING,
     )
     db.add(row)
     db.commit()
     db.refresh(row)
+
+
+    # 注册后台任务：视频分析
+    def run_analysis():
+        from sqlmodel import Session
+
+        try:
+            result = analyze_video(
+                video_path=save_path,
+                video_id=str(row.video_id),
+            )
+
+            # 第一阶段完成：写入 raw_tracks_path，并标记为 COMPLETED（表示特征提取完成）
+            with Session(sync_engine) as db2:
+                video = db2.get(VideoSource, str(row.video_id))
+                if video:
+                    video.analysis_status = AnalysisStatus.COMPLETED
+                    video.raw_tracks_path = result.get("raw_tracks_path")
+                    db2.add(video)
+                    db2.commit()
+        except Exception as e:
+            # 失败则标记为失败状态
+            with Session(sync_engine) as db2:
+                video = db2.get(VideoSource, str(row.video_id))
+                if video:
+                    video.analysis_status = AnalysisStatus.FAILED
+                    db2.add(video)
+                    db2.commit()
+            print(f"分析任务失败: {e}")
+
+    # 将任务注册到 BackgroundTasks（在响应返回后执行）
+    background_tasks.add_task(run_analysis)
 
     return {"code": 0, "message": "ok", "data": _to_ui_dict(row)}
 
@@ -128,9 +167,35 @@ def list_videos(keyword: Optional[str] = None, db: Session = Depends(get_sqlmode
         row = _to_ui_dict(v)
         # 以 system_settings.current_source_id 为权威“当前演示源”
         row["isDemo"] = bool(current_id and str(v.video_id) == current_id)
+        # 补充分析元信息
+        row["analysisStatus"] = getattr(v.analysis_status, "value", v.analysis_status)
+        row["analysisJsonPath"] = v.analysis_json_path
         data.append(row)
 
     return {"code": 0, "message": "ok", "data": data}
+
+
+@router.get("/videos/{video_id}")
+def get_video(video_id: str, db: Session = Depends(get_sqlmodel_db)):
+    # 避免与 /videos/demo 等固定路径冲突：非 UUID 直接 404
+    try:
+        UUID(video_id)
+    except Exception:
+        raise HTTPException(status_code=404, detail="视频不存在")
+
+    v = db.get(VideoSource, video_id)
+    if not v:
+        raise HTTPException(status_code=404, detail="视频不存在")
+
+    settings = db.get(SystemSettings, 1)
+    current_id = str(settings.current_source_id) if settings and settings.current_source_id else ""
+
+    row = _to_ui_dict(v)
+    row["isDemo"] = bool(current_id and str(v.video_id) == current_id)
+    row["analysisStatus"] = getattr(v.analysis_status, "value", v.analysis_status)
+    row["analysisJsonPath"] = v.analysis_json_path
+
+    return {"code": 0, "message": "ok", "data": row}
 
 
 @router.post("/videos/{video_id}/set-demo")
@@ -203,14 +268,14 @@ def delete_video(video_id: str, db: Session = Depends(get_sqlmodel_db)):
     except Exception as e:
         print(f"Warn: Failed to delete file {target_video.file_path}: {e}")
 
-    db.delete(target_video)
-    db.commit()
-
-    # 如果删除的是当前选择源，则清空设置，避免指向不存在的视频
+    # 如果删除的是当前选择源（system_settings.current_source_id），需先清空设置，避免外键约束导致 500
     settings = db.get(SystemSettings, 1)
     if settings and settings.current_source_id and str(settings.current_source_id) == str(video_id):
         settings.current_source_id = None
         db.add(settings)
         db.commit()
+
+    db.delete(target_video)
+    db.commit()
 
     return {"code": 0, "message": "ok", "data": True}

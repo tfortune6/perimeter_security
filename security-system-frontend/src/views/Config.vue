@@ -148,9 +148,14 @@ const save = async () => {
   loading.value = true
   try {
     await saveConfig(currentVideoId.value)
-    ElMessage.success('保存成功（演示）')
+    ElMessage.success('保存成功')
   } catch (e) {
-    ElMessage.error(e?.message || '保存失败')
+    const detail = e?.response?.data?.detail || e?.message || '保存失败'
+    if (detail.includes('该视频尚未完成特征提取')) {
+      ElMessage.warning('视频正在分析中，请稍后再试')
+    } else {
+      ElMessage.error(detail)
+    }
   } finally {
     loading.value = false
   }

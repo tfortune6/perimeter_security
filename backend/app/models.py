@@ -5,7 +5,7 @@ from enum import Enum
 from typing import Optional, Dict, Any, List
 from uuid import UUID, uuid4
 
-from sqlalchemy import Column
+from sqlalchemy import Column, Enum as SAEnum
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, relationship
 from sqlmodel import Field, Relationship, SQLModel
@@ -26,6 +26,25 @@ class ZoneType(str, Enum):
     CORE_ZONE = "CoreZone"
 
 
+class AnalysisStatus(str, Enum):
+    PENDING = "PENDING"
+    PROCESSING = "PROCESSING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+
+    @classmethod
+    def _missing_(cls, value):
+        # 兼容历史库中小写/混合大小写枚举值（如 pending）
+        if value is None:
+            return None
+        if isinstance(value, str):
+            normalized = value.upper()
+            for member in cls:
+                if member.value == normalized:
+                    return member
+        return None
+
+
 class VideoSource(SQLModel, table=True):
     __tablename__ = "video_sources"
 
@@ -42,6 +61,22 @@ class VideoSource(SQLModel, table=True):
     ext: str = Field(default="", description="文件扩展名, e.g., MP4")
     size: str = Field(default="", description="格式化后的文件大小, e.g., 128 MB")
     is_demo: bool = Field(default=False, index=True, description="是否为演示视频")
+
+    analysis_status: AnalysisStatus = Field(
+        default=AnalysisStatus.PENDING,
+        sa_column=Column(
+            SAEnum(
+                AnalysisStatus,
+                name="analysisstatus",
+                native_enum=False,
+                values_callable=lambda enum: [e.value for e in enum],
+                validate_strings=False,
+            )
+        ),
+        description="分析状态",
+    )
+    raw_tracks_path: Optional[str] = Field(default=None, description="原始轨迹JSON文件路径")
+    analysis_json_path: Optional[str] = Field(default=None, description="分析结果JSON文件路径")
 
     alarms: Mapped[List["AlarmEvent"]] = Relationship(
         back_populates="video",
