@@ -132,18 +132,33 @@ const fetchOverlays = async () => {
   overlayFrames.value = []
   overlayTimestamps.value = []
 
-  if (!currentSourceId.value) return
+  if (!currentSourceId.value) {
+    console.warn('[fetchOverlays] no currentSourceId')
+    return
+  }
 
   try {
+    console.log('[fetchOverlays] requesting overlays for sourceId:', currentSourceId.value)
     // 后端支持 video_id/sourceId，这里沿用现有调用传 sourceId
     const resp = await getDashboardOverlays(currentSourceId.value)
+    console.log('[fetchOverlays] raw resp:', resp)
 
     // 兼容后端返回 {code:0, data:{overlays:[...]}} 结构
-    const overlays = resp?.data?.overlays || resp?.data?.frames || []
+    // axios interceptor 已解包，所以 resp 直接是 {overlays:[...]}
+    const overlays = resp?.overlays || resp?.frames || resp?.data?.overlays || resp?.data?.frames || []
     overlayFrames.value = overlays
     overlayTimestamps.value = overlays.map((f) => Number(f.timestamp || 0))
-    overlayData.value = resp?.data || resp
+    overlayData.value = resp
+
+    // 调试：暴露到 window
+    window.__overlayFrames = overlays
+    console.log('[fetchOverlays] loaded overlays count:', overlays.length)
+
+    // 调试：暴露到 window
+    window.__overlayFrames = overlays
+    console.log('[fetchOverlays] loaded overlays count:', overlays.length)
   } catch (e) {
+    console.error('[fetchOverlays] error:', e)
     // 202：分析未完成；其它错误提示
     const status = e?.response?.status
     if (status === 202) {
@@ -215,6 +230,7 @@ const drawFrame = (frame) => {
   ctx.clearRect(0, 0, w, h)
 
   const objects = Array.isArray(frame?.objects) ? frame.objects : []
+  console.log('[drawFrame] objects count:', objects.length)
   for (const obj of objects) {
     const box = obj?.box_norm || obj?.box
     if (!box) continue
@@ -229,6 +245,7 @@ const drawFrame = (frame) => {
 
     ctx.lineWidth = 2
     ctx.strokeStyle = obj?.color || (isAlarm ? '#ef4444' : '#22c55e')
+    console.log('[drawFrame] draw rect', { x, y, bw, bh, color: ctx.strokeStyle })
     ctx.strokeRect(x, y, bw, bh)
 
     const label = `${obj?.id?.slice?.(0, 8) || ''} ${obj?.class || ''}`.trim()
@@ -244,6 +261,9 @@ const drawFrame = (frame) => {
     }
   }
 }
+
+// 暴露到 window 便于调试
+window.__drawFrame = drawFrame
 
 const startRenderLoop = () => {
   cancelRenderLoop()
