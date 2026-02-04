@@ -11,6 +11,7 @@ from sqlmodel import Session, select
 from app.core.config import settings
 from app.core.database import get_sqlmodel_db, sync_engine
 from app.models import AlarmEvent, AnalysisStatus, SystemSettings, VideoSource, Zone, ZoneConfig
+from sqlalchemy import delete
 from app.services.video_analysis import analyze_video
 
 router = APIRouter(tags=["videos"])
@@ -251,22 +252,32 @@ def delete_video(video_id: str, db: Session = Depends(get_sqlmodel_db)):
     if not target_video:
         raise HTTPException(status_code=404, detail="视频不存在")
 
-    # 删除前检查关联数据，避免外键约束导致 500
-    zone_count = db.exec(select(Zone).where(Zone.source_id == target_video.video_id)).all()
-    alarm_count = db.exec(select(AlarmEvent).where(AlarmEvent.video_id == target_video.video_id)).all()
-    config_count = db.exec(select(ZoneConfig).where(ZoneConfig.video_id == target_video.video_id)).all()
-
-    if zone_count or alarm_count or config_count:
-        raise HTTPException(
-            status_code=400,
-            detail="删除失败：该视频源存在关联数据（区域/告警/配置）。请先在【配置中心】删除该视频源的区域，并清理相关告警记录/配置后，再重试删除。",
-        )
+    # 级联删除关联数据：Zone、AlarmEvent、ZoneConfig
+    try:
+        # 删除 Zone（配置中心区域）
+        db.exec(delete(Zone).where(Zone.source_id == target_video.video_id))
+        # 删除 AlarmEvent（报警记录）
+        db.exec(delete(AlarmEvent).where(AlarmEvent.video_id == target_video.video_id))
+        # 删除 ZoneConfig（区域配置）
+        db.exec(delete(ZoneConfig).where(ZoneConfig.video_id == target_video.video_id))
+    except Exception as e:
+        print(f"Warn: Failed to delete associated data for video {video_id}: {e}")
 
     try:
         if os.path.exists(target_video.file_path):
             os.remove(target_video.file_path)
     except Exception as e:
         print(f"Warn: Failed to delete file {target_video.file_path}: {e}")
+
+    # 删除分析文件（raw_tracks.json 和 display_overlays.json）
+    for path_key in ("raw_tracks_path", "analysis_json_path"):
+        file_path = getattr(target_video, path_key)
+        if file_path and os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+                print(f"Deleted analysis file: {file_path}")
+            except Exception as e:
+                print(f"Warn: Failed to delete analysis file {file_path}: {e}")
 
     # 如果删除的是当前选择源（system_settings.current_source_id），需先清空设置，避免外键约束导致 500
     settings = db.get(SystemSettings, 1)

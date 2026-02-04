@@ -80,8 +80,12 @@ const fetchZones = async () => {
   if (!currentSourceId.value) return
   loadingZones.value = true
   try {
-    zones.value = await getDashboardZones(currentSourceId.value)
-  } catch {
+    const resp = await getDashboardZones(currentSourceId.value)
+    // axios interceptor 已解包，resp 直接是数组
+    zones.value = Array.isArray(resp) ? resp : resp?.data || []
+    console.log('[fetchZones] loaded zones count:', zones.value.length)
+  } catch (e) {
+    console.error('[fetchZones] error:', e)
     zones.value = []
   } finally {
     loadingZones.value = false
@@ -229,6 +233,31 @@ const drawFrame = (frame) => {
 
   ctx.clearRect(0, 0, w, h)
 
+  // 先绘制区域框（来自配置中心），再绘制检测框
+  const zs = Array.isArray(zones.value) ? zones.value : []
+  for (const z of zs) {
+    const pts = z?.polygonPoints
+    if (!Array.isArray(pts) || pts.length < 3) continue
+
+    ctx.beginPath()
+    for (let i = 0; i < pts.length; i++) {
+      const p = pts[i]
+      if (!Array.isArray(p) || p.length < 2) continue
+      const px = (Number(p[0]) || 0) * w
+      const py = (Number(p[1]) || 0) * h
+      if (i === 0) ctx.moveTo(px, py)
+      else ctx.lineTo(px, py)
+    }
+    ctx.closePath()
+
+    const t = z?.type
+    ctx.lineWidth = 2
+    ctx.strokeStyle = t === 'warning' ? '#f59e0b' : '#ef4444'
+    ctx.globalAlpha = 0.9
+    ctx.stroke()
+    ctx.globalAlpha = 1
+  }
+
   const objects = Array.isArray(frame?.objects) ? frame.objects : []
   console.log('[drawFrame] objects count:', objects.length)
   for (const obj of objects) {
@@ -314,6 +343,16 @@ const onVideoSeeked = () => {
   const idx = findNearestFrameIndex(t)
   if (idx < 0) return
   drawFrame(frames[idx])
+}
+
+const togglePlayPause = () => {
+  const video = videoRef.value
+  if (!video) return
+  if (video.paused) {
+    video.play()
+  } else {
+    video.pause()
+  }
 }
 
 watch(currentSourceId, async (val, old) => {
@@ -432,6 +471,7 @@ onBeforeUnmount(() => {
           <span class="live">PLAYBACK</span>
         </div>
         <div class="video-controls-right">
+          <el-button text class="ctrl-btn small" @click="togglePlayPause">播放/暂停</el-button>
           <el-button text class="ctrl-btn small" @click="fetchOverlays">刷新检测结果</el-button>
           <el-button text class="ctrl-btn small" @click="toggleFullscreen">{{ isFullscreen ? '退出全屏' : 'Fullscreen' }}</el-button>
         </div>
