@@ -3,7 +3,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import AppLayout from '../components/layout/AppLayout.vue'
 import { getDashboardOverlays, getDashboardZones } from '../api/dashboard'
-import { getDemoVideo } from '../api/videos'
+import { getVideo } from '../api/videos'
 import { getSources } from '../api/config'
 import { getSystemStatus, updateSystemStatus } from '../api/system'
 import { getVideoFile } from '../storage/videoStore'
@@ -14,10 +14,9 @@ const fallbackBg =
 const userAvatar =
   'https://lh3.googleusercontent.com/aida-public/AB6AXuBw_U7F6T6qfTV8Bm9nj4aOabzd9KgjjATZ21OkZ1YsuuKTkirUCIOJk4AsWQ4_d39X9opwjcZB32_IuWay8QEamkxgzcIBXH0_ZmsB1Xo14f9UWCBCdHNedtJ8LvDICPdrNBcb_PneogAfLsZZwFOuJlvwGxWUwcJHPBTTGyRifBlLfwa-yO2Yph0DGAQlsUVH6uK1rC2QBOFFb_T4QiX2tu4qDHmMEUnDYHzP9vP57TyVYYXe4EV0abzOA2Va3MNVtxpFLSyHNMw'
 
-const demoVideo = ref(null)
 const loadingVideo = ref(false)
-const demoVideoUrl = ref('')
-let demoVideoObjectUrl = null
+const videoUrl = ref('')
+let objectUrl = null // 统一 File/Blob URL 释放
 
 const zones = ref([])
 const loadingZones = ref(false)
@@ -89,31 +88,40 @@ const fetchZones = async () => {
   }
 }
 
-const fetchDemoVideo = async () => {
+const loadCurrentVideo = async () => {
   loadingVideo.value = true
   try {
-    const video = await getDemoVideo()
-    demoVideo.value = video
+    videoUrl.value = ''
 
-    if (demoVideoObjectUrl) {
-      URL.revokeObjectURL(demoVideoObjectUrl)
-      demoVideoObjectUrl = null
+    if (objectUrl) {
+      URL.revokeObjectURL(objectUrl)
+      objectUrl = null
     }
 
-    if (video) {
-      const file = await getVideoFile(video.id)
-      if (file) {
-        demoVideoObjectUrl = URL.createObjectURL(file)
-        demoVideoUrl.value = demoVideoObjectUrl
-      } else {
-        demoVideoUrl.value = video.previewUrl || ''
-      }
-    } else {
-      demoVideoUrl.value = ''
+    if (!currentSourceId.value) {
+      ElMessage.warning('暂无视频源，请去视频源管理页设置')
+      return
     }
-  } catch {
-    demoVideo.value = null
-    demoVideoUrl.value = ''
+
+    const detail = await getVideo(currentSourceId.value)
+
+    // 后端当前返回的可访问地址字段为 previewUrl
+    if (detail?.previewUrl) {
+      videoUrl.value = detail.previewUrl
+      return
+    }
+
+    // fallback：尝试从本地缓存获取
+    const file = await getVideoFile(detail?.id || currentSourceId.value).catch(() => null)
+    if (file) {
+      objectUrl = URL.createObjectURL(file)
+      videoUrl.value = objectUrl
+      return
+    }
+
+    ElMessage.error('该视频暂无可播放地址')
+  } catch (e) {
+    ElMessage.error(e?.message || '加载视频失败')
   } finally {
     loadingVideo.value = false
   }
@@ -208,7 +216,7 @@ const drawFrame = (frame) => {
 
   const objects = Array.isArray(frame?.objects) ? frame.objects : []
   for (const obj of objects) {
-    const box = obj?.box
+    const box = obj?.box_norm || obj?.box
     if (!box) continue
 
     const x = Number(box.x || 0) * w
@@ -217,10 +225,10 @@ const drawFrame = (frame) => {
     const bh = Number(box.h || 0) * h
 
     const alarmLevel = obj?.alarm_level
-    const isAlarm = alarmLevel === 1 || alarmLevel === 2
+    const isAlarm = alarmLevel === 1 || alarmLevel === 2 || alarmLevel === 'CRITICAL' || alarmLevel === 'WARNING'
 
     ctx.lineWidth = 2
-    ctx.strokeStyle = isAlarm ? '#ef4444' : '#22c55e'
+    ctx.strokeStyle = obj?.color || (isAlarm ? '#ef4444' : '#22c55e')
     ctx.strokeRect(x, y, bw, bh)
 
     const label = `${obj?.id?.slice?.(0, 8) || ''} ${obj?.class || ''}`.trim()
@@ -296,7 +304,7 @@ watch(currentSourceId, async (val, old) => {
     // 忽略
   }
 
-  await fetchDemoVideo()
+  await loadCurrentVideo()
   await fetchOverlays()
   await fetchZones()
 
@@ -306,7 +314,7 @@ watch(currentSourceId, async (val, old) => {
 
 onMounted(async () => {
   await initSource()
-  await fetchDemoVideo()
+  await loadCurrentVideo()
   await fetchOverlays()
   await fetchZones()
 
@@ -327,7 +335,7 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   cancelRenderLoop()
 
-  if (demoVideoObjectUrl) URL.revokeObjectURL(demoVideoObjectUrl)
+  if (objectUrl) URL.revokeObjectURL(objectUrl)
   document.removeEventListener('fullscreenchange', syncFullscreenState)
 
   if (resizeObs.value) {
@@ -349,10 +357,10 @@ onBeforeUnmount(() => {
         <div class="video-bg" :style="{ backgroundImage: `url('${fallbackBg}')` }"></div>
 
         <video
-          v-if="demoVideoUrl"
+          v-if="videoUrl"
           ref="videoRef"
           class="video-player"
-          :src="demoVideoUrl"
+          :src="videoUrl"
           autoplay
           muted
           loop

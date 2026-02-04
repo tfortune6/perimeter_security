@@ -2,7 +2,7 @@ import http from './http'
 
 export const getVideos = (params) => http.get('/videos', { params })
 
-export const getDemoVideo = () => http.get('/videos/demo')
+export const getVideo = (id) => http.get(`/videos/${id}`)
 
 export const uploadVideo = (file) => {
   const fd = new FormData()
