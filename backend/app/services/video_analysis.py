@@ -80,7 +80,7 @@ def analyze_video(video_path: str, video_id: str) -> Dict[str, Any]:
         timestamp_sec = frame_id / fps
 
         # 使用 predict 并降低置信度阈值，避免因默认 0.25 过滤掉目标
-        results = model.predict(frame, conf=0.1, verbose=False)
+        results = model.predict(frame, conf=0.25, verbose=False)
         objects: List[Dict[str, Any]] = []
 
         for r in results:

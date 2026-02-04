@@ -35,12 +35,12 @@ def list_alarms(
 ):
     stmt = select(AlarmEvent)
 
-    # 按关键字搜索（ID 或备注，暂无备注字段，先只支持 ID）
+    # 按关键字搜索：支持 event_id 或 video_id
     if query:
         cleaned = query.replace("#", "")
         try:
             uuid_obj = UUID(cleaned)
-            stmt = stmt.where(AlarmEvent.event_id == uuid_obj)
+            stmt = stmt.where((AlarmEvent.event_id == uuid_obj) | (AlarmEvent.video_id == uuid_obj))
         except Exception:
             # 非合法 UUID，跳过过滤
             pass

@@ -62,8 +62,9 @@ def _zone_to_dict(z: Zone) -> dict:
         "type": z.type,
         "threshold": z.threshold,
         "motion": z.motion,
-        # Dashboard 叠加层绘制使用归一化坐标（0~1），因此这里直接返回归一化点位
-        "polygonPoints": z.polygon_points,
+        # 配置中心使用 viewBox(800x450) 坐标绘制；Dashboard 使用归一化坐标绘制
+        "polygonPoints": _to_view_points(z.polygon_points),
+        "polygonPointsNorm": z.polygon_points,
     }
 
 

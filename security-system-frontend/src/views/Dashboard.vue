@@ -1,8 +1,8 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElNotification } from 'element-plus'
 import AppLayout from '../components/layout/AppLayout.vue'
-import { getDashboardOverlays, getDashboardZones } from '../api/dashboard'
+import { getAlarmsBySourceId, getDashboardOverlays, getDashboardZones } from '../api/dashboard'
 import { getVideo } from '../api/videos'
 import { getSources } from '../api/config'
 import { getSystemStatus, updateSystemStatus } from '../api/system'
@@ -31,6 +31,11 @@ const canvasRef = ref(null)
 const overlayData = ref(null) // 后端返回的完整 JSON（含 frames）
 const overlayFrames = ref([]) // overlayData.frames
 const overlayTimestamps = ref([]) // 用于二分查找的时间数组（秒）
+
+// 预处理回放事件（从后端一次性拉取 AlarmEvent）
+const allAlarmEvents = ref([]) // [{ id, time, target, severity, thumb, status }]
+const alarmCursor = ref(0) // 指向下一个待触发的事件
+const realtimeEvents = ref([]) // 右侧面板显示的事件（按触发顺序追加）
 
 const rafId = ref(0)
 const resizeObs = ref(null)
@@ -89,6 +94,34 @@ const fetchZones = async () => {
     zones.value = []
   } finally {
     loadingZones.value = false
+  }
+}
+
+const fetchAlarmEvents = async () => {
+  allAlarmEvents.value = []
+  realtimeEvents.value = []
+  alarmCursor.value = 0
+
+  if (!currentSourceId.value) return
+
+  try {
+    const resp = await getAlarmsBySourceId(currentSourceId.value, 1, 2000)
+    const list = resp?.list || resp?.data?.list || []
+    const items = Array.isArray(list) ? list : []
+
+    const normalized = items
+      .map((x) => ({
+        ...x,
+        timestamp: Number(x.time || 0),
+      }))
+      .filter((x) => Number.isFinite(x.timestamp))
+      .sort((a, b) => a.timestamp - b.timestamp)
+
+    allAlarmEvents.value = normalized
+    console.log('[fetchAlarmEvents] loaded events:', normalized.length)
+  } catch (e) {
+    console.error('[fetchAlarmEvents] error:', e)
+    allAlarmEvents.value = []
   }
 }
 
@@ -236,7 +269,7 @@ const drawFrame = (frame) => {
   // 先绘制区域框（来自配置中心），再绘制检测框
   const zs = Array.isArray(zones.value) ? zones.value : []
   for (const z of zs) {
-    const pts = z?.polygonPoints
+    const pts = z?.polygonPointsNorm || z?.polygonPoints
     if (!Array.isArray(pts) || pts.length < 3) continue
 
     ctx.beginPath()
@@ -314,6 +347,28 @@ const startRenderLoop = () => {
 
     const frame = frames[idx]
     drawFrame(frame)
+
+    // 预处理回放：推进告警事件游标并触发通知/右侧列表
+    const events = allAlarmEvents.value
+    if (events.length) {
+      while (alarmCursor.value < events.length && Number(events[alarmCursor.value]?.timestamp || 0) <= t) {
+        const ev = events[alarmCursor.value]
+        alarmCursor.value += 1
+
+        // 推送到右侧实时事件列表（最新在前）
+        realtimeEvents.value.unshift(ev)
+        if (realtimeEvents.value.length > 50) realtimeEvents.value.length = 50
+
+        // Notification 弹窗
+        const isCritical = ev?.severity === 'critical'
+        ElNotification({
+          title: isCritical ? '严重告警' : '预警',
+          message: `${ev?.target || 'Unknown'} @ ${Number(ev?.timestamp || 0).toFixed(2)}s`,
+          type: isCritical ? 'error' : 'warning',
+          duration: 3500,
+        })
+      }
+    }
   }
 
   rafId.value = requestAnimationFrame(tick)
@@ -366,6 +421,7 @@ watch(currentSourceId, async (val, old) => {
   await loadCurrentVideo()
   await fetchOverlays()
   await fetchZones()
+  await fetchAlarmEvents()
 
   await nextTick()
   ensureCanvasSize()
@@ -376,6 +432,7 @@ onMounted(async () => {
   await loadCurrentVideo()
   await fetchOverlays()
   await fetchZones()
+  await fetchAlarmEvents()
 
   document.addEventListener('fullscreenchange', syncFullscreenState)
 
@@ -459,7 +516,19 @@ onBeforeUnmount(() => {
           <div class="events-title">实时事件 (Events)</div>
         </div>
         <div class="events-body">
-          <div class="empty">已切换为预处理回放模式：实时事件面板待接入</div>
+          <div v-if="!realtimeEvents.length" class="empty">暂无事件</div>
+          <div v-else class="events-list">
+            <div v-for="ev in realtimeEvents" :key="ev.id" class="event-item" :class="ev.severity">
+              <div class="event-top">
+                <div class="event-id">{{ ev.id }}</div>
+                <div class="event-time">{{ Number(ev.timestamp || ev.time || 0).toFixed(2) }}s</div>
+              </div>
+              <div class="event-bottom">
+                <div class="event-target">{{ ev.target }}</div>
+                <div class="event-sev">{{ ev.severity }}</div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="events-footer">
           <router-link class="view-all" to="/history">查看全部告警</router-link>
@@ -674,6 +743,68 @@ onBeforeUnmount(() => {
   flex: 1;
   overflow: auto;
   padding: 12px;
+}
+
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.event-item {
+  border: 1px solid #2a3642;
+  border-radius: 10px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.event-item.critical {
+  border-color: rgba(239, 68, 68, 0.65);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.event-item.warning {
+  border-color: rgba(245, 158, 11, 0.65);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.event-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.event-id {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
+.event-time {
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.event-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.event-target {
+  font-size: 13px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.event-sev {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #cbd5e1;
+  padding: 2px 6px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.15);
 }
 
 .events-footer {
