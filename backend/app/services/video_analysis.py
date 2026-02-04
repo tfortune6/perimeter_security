@@ -225,7 +225,7 @@ def compute_alarms(
                     {
                         "event_id": str(uuid4()),
                         "video_id": video_id,
-                        "video_timestamp": f"{float(timestamp):.2f}",
+                        "video_timestamp": float(timestamp),
                         "object_type": obj.get("class"),
                         "threat_level": alarm_level,
                         "snapshot_path": None,

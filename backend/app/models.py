@@ -95,7 +95,7 @@ class AlarmEvent(SQLModel, table=True):
 
     video_id: UUID = Field(foreign_key="video_sources.video_id", index=True)
 
-    video_timestamp: str = Field(description="报警发生在视频内的时间点（秒或时间戳字符串）")
+    video_timestamp: float = Field(description="报警发生在视频内的时间点（秒或时间戳字符串）")
     object_type: ObjectType = Field(default=ObjectType.PERSON)
     threat_level: ThreatLevel = Field(default=ThreatLevel.WARNING)
 
