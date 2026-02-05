@@ -421,8 +421,33 @@ const startRenderLoop = () => {
         }
         tick.__lastEventAt[key] = Number(ev?.timestamp || 0)
 
+        // 反向查找 trackId 和 zoneName
+        const enrichedEv = { ...ev }
+        const frameIdx = findNearestFrameIndex(t)
+        if (frameIdx !== -1) {
+          const frame = overlayFrames.value[frameIdx]
+          const objects = Array.isArray(frame?.objects) ? frame.objects : []
+          // 简单策略：找第一个在报警区的同类目标
+          for (const obj of objects) {
+            const objType = String(obj?.class || '').toUpperCase()
+            const evType = String(ev?.target || ev?.object_type || '').toUpperCase()
+            const alarmLevel = obj?.alarm_level
+            const isAlarmObj = alarmLevel === 1 || alarmLevel === 2 || alarmLevel === 'CRITICAL' || alarmLevel === 'WARNING'
+
+            if (isAlarmObj && objType.includes(evType)) {
+              enrichedEv.trackId = obj.id
+              // 尝试关联区域名称
+              if (obj.zone_id && zones.value.length) {
+                const zone = zones.value.find(z => z.id === obj.zone_id)
+                if (zone) enrichedEv.zoneName = zone.name
+              }
+              break // 找到一个就跳出
+            }
+          }
+        }
+
         // 推送到右侧实时事件列表（最新在前）
-        realtimeEvents.value.unshift(ev)
+        realtimeEvents.value.unshift(enrichedEv)
         if (realtimeEvents.value.length > 50) realtimeEvents.value.length = 50
         window.__realtimeEvents = realtimeEvents.value
 
