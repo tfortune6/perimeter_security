@@ -41,6 +41,28 @@ const rafId = ref(0)
 const resizeObs = ref(null)
 
 const isFullscreen = ref(false)
+const isVideoEnded = ref(false)
+
+const formatSecondsToMMSS = (seconds) => {
+  const s = Math.max(0, Math.floor(Number(seconds || 0)))
+  const mm = String(Math.floor(s / 60)).padStart(2, '0')
+  const ss = String(s % 60).padStart(2, '0')
+  return `${mm}:${ss}`
+}
+
+const formatEventTime = (ev) => {
+  if (!ev) return '00:00'
+  if (typeof ev.timestamp === 'string' && ev.timestamp.includes(':')) return ev.timestamp
+  const t = Number(ev.timestamp ?? ev.time ?? 0)
+  return formatSecondsToMMSS(t)
+}
+
+const getEventTargetType = (ev) => {
+  const typeStr = String(ev?.targetType || ev?.object_type || ev?.target || '').toUpperCase()
+  if (typeStr.includes('PERSON')) return 'PERSON'
+  if (typeStr.includes('VEHICLE') || typeStr.includes('CAR')) return 'VEHICLE'
+  return 'UNKNOWN' // or a default type
+}
 
 const currentSourceName = computed(() => {
   const s = sources.value.find((x) => x.id === currentSourceId.value)
@@ -426,13 +448,25 @@ const cancelRenderLoop = () => {
   }
 }
 
-const onVideoPlay = () => startRenderLoop()
+const onVideoPlay = () => {
+  isVideoEnded.value = false
+  startRenderLoop()
+}
+
 const onVideoPause = () => {
   cancelRenderLoop()
   // 暂停时保留最后一帧绘制结果，不清空
 }
+
+const onVideoEnded = () => {
+  isVideoEnded.value = true
+  cancelRenderLoop()
+  // ended 事件触发时，video 本身已停止在最后一帧
+}
+
 const onVideoSeeked = () => {
   // 拖动进度条时立即绘制一次
+  isVideoEnded.value = false
   ensureCanvasSize()
   const video = videoRef.value
   if (!video) return
@@ -448,11 +482,33 @@ const onVideoSeeked = () => {
 const togglePlayPause = () => {
   const video = videoRef.value
   if (!video) return
+
+  // 如果已经播完，再点播放等同于重播
+  if (video.ended || isVideoEnded.value) {
+    video.currentTime = 0
+    alarmCursor.value = 0
+    realtimeEvents.value = []
+    isVideoEnded.value = false
+    video.play()
+    return
+  }
+
   if (video.paused) {
+    isVideoEnded.value = false
     video.play()
   } else {
     video.pause()
   }
+}
+
+const replayVideo = () => {
+  const video = videoRef.value
+  if (!video) return
+  video.currentTime = 0
+  alarmCursor.value = 0
+  realtimeEvents.value = []
+  isVideoEnded.value = false
+  video.play()
 }
 
 watch(currentSourceId, async (val, old) => {
@@ -463,6 +519,7 @@ watch(currentSourceId, async (val, old) => {
     // 忽略
   }
 
+  isVideoEnded.value = false
   await loadCurrentVideo()
   await fetchOverlays()
   await fetchZones()
@@ -524,11 +581,11 @@ onBeforeUnmount(() => {
           :src="videoUrl"
           autoplay
           muted
-          loop
           playsinline
           @play="onVideoPlay"
           @pause="onVideoPause"
           @seeked="onVideoSeeked"
+          @ended="onVideoEnded"
         />
 
         <canvas ref="canvasRef" class="overlay-canvas" />
@@ -558,20 +615,52 @@ onBeforeUnmount(() => {
 
       <div class="events">
         <div class="events-header">
-          <div class="events-title">实时事件 (Events)</div>
+          <div class="events-title">
+            <span class="material-symbols-outlined events-title-ico">notifications_active</span>
+            <span>实时事件 (Real-time Events)</span>
+          </div>
         </div>
         <div class="events-body">
           <div v-if="!realtimeEvents.length" class="empty">暂无事件</div>
           <div v-else class="events-list">
-            <div v-for="ev in realtimeEvents" :key="ev.id" class="event-item" :class="ev.severity">
-              <div class="event-top">
-                <div class="event-id">{{ ev.id }}</div>
-                <div class="event-time">{{ Number(ev.timestamp || ev.time || 0).toFixed(2) }}s</div>
+            <div
+              v-for="(ev, idx) in realtimeEvents"
+              :key="ev.id || `${ev.trackId || 't'}-${idx}`"
+              class="event-card"
+              :class="[
+                `sev-${(ev.type || ev.severity || '').toString().toLowerCase()}`,
+                `tgt-${getEventTargetType(ev).toLowerCase()}`,
+                { newest: idx === 0 },
+              ]"
+            >
+              <div class="event-ico" :class="`ico-${(ev.type || ev.severity || '').toString().toLowerCase()}`">
+                <span class="material-symbols-outlined">
+                  {{
+                    (getEventTargetType(ev) === 'PERSON' && (ev.type === 'CRITICAL' || ev.severity === 'critical'))
+                      ? 'person_alert'
+                      : (getEventTargetType(ev) === 'PERSON' && (ev.type === 'WARNING' || ev.severity === 'warning'))
+                        ? 'person'
+                        : (getEventTargetType(ev) === 'VEHICLE' && (ev.type === 'CRITICAL' || ev.severity === 'critical'))
+                          ? 'no_crash'
+                          : 'directions_car'
+                  }}
+                </span>
               </div>
-              <div class="event-bottom">
-                <div class="event-target">{{ ev.target }}</div>
-                <div class="event-sev">{{ ev.severity }}</div>
+
+              <div class="event-mid">
+                <div class="event-row1">
+                  <span class="event-badge" :class="`badge-${(ev.type || ev.severity || '').toString().toLowerCase()}`">
+                    {{ (ev.type === 'CRITICAL' || ev.severity === 'critical') ? '非法入侵' : '预警事件' }}
+                  </span>
+                  <span v-if="ev.trackId" class="event-track">[{{ ev.trackId }}]</span>
+                </div>
+                <div class="event-row2" :title="ev.zoneName">
+                  <span class="event-zone-prefix">Zone:</span>
+                  <span class="event-zone-name">{{ ev.zoneName || '-' }}</span>
+                </div>
               </div>
+
+              <div class="event-time">{{ formatEventTime(ev) }}</div>
             </div>
           </div>
         </div>
@@ -585,7 +674,17 @@ onBeforeUnmount(() => {
           <span class="live">PLAYBACK</span>
         </div>
         <div class="video-controls-right">
-          <el-button text class="ctrl-btn small" @click="togglePlayPause">播放/暂停</el-button>
+          <div class="classic-controls">
+            <button class="classic-btn" :title="videoRef?.paused ? '播放' : '暂停'" @click="togglePlayPause">
+              <span class="material-symbols-outlined">
+                {{ videoRef?.paused ? 'play_arrow' : 'pause' }}
+              </span>
+            </button>
+            <button class="classic-btn" title="重播" @click="replayVideo">
+              <span class="material-symbols-outlined">replay</span>
+            </button>
+          </div>
+
           <el-button text class="ctrl-btn small" @click="fetchOverlays">刷新检测结果</el-button>
           <el-button text class="ctrl-btn small" @click="toggleFullscreen">{{ isFullscreen ? '退出全屏' : 'Fullscreen' }}</el-button>
         </div>
@@ -746,6 +845,47 @@ onBeforeUnmount(() => {
   gap: 10px;
 }
 
+.classic-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 6px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  margin-right: 4px;
+}
+
+.classic-btn {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #fff;
+  cursor: pointer;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.classic-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-1px);
+}
+
+.classic-btn:active {
+  transform: translateY(0px);
+}
+
+.classic-btn .material-symbols-outlined {
+  font-size: 22px;
+  line-height: 1;
+}
+
 .ctrl-btn {
   color: #fff;
 }
@@ -779,9 +919,17 @@ onBeforeUnmount(() => {
 }
 
 .events-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 13px;
   font-weight: 700;
   color: #fff;
+}
+
+.events-title-ico {
+  font-size: 18px;
+  color: #137fec;
 }
 
 .events-body {
@@ -793,63 +941,167 @@ onBeforeUnmount(() => {
 .events-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
-.event-item {
+.event-card {
+  display: grid;
+  grid-template-columns: 38px 1fr auto;
+  gap: 10px;
+  align-items: center;
   border: 1px solid #2a3642;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 10px;
+  background: rgba(16, 25, 34, 0.35);
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.event-card:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.16);
+  transform: translateY(-1px);
+}
+
+.event-card.sev-critical {
+  border-color: rgba(239, 68, 68, 0.38);
+}
+
+.event-card.sev-warning {
+  border-color: rgba(245, 158, 11, 0.35);
+}
+
+.event-card.newest {
+  animation: eventPulse 1.6s ease-in-out 0s 2;
+}
+
+@keyframes eventPulse {
+  0% {
+    box-shadow: 0 0 0 rgba(239, 68, 68, 0);
+    background: rgba(255, 255, 255, 0.06);
+  }
+  50% {
+    box-shadow: 0 0 0 6px rgba(19, 127, 236, 0.12);
+    background: rgba(19, 127, 236, 0.08);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(239, 68, 68, 0);
+    background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+.event-ico {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.04);
 }
 
-.event-item.critical {
-  border-color: rgba(239, 68, 68, 0.65);
-  background: rgba(239, 68, 68, 0.08);
+.event-ico .material-symbols-outlined {
+  font-size: 20px;
+  line-height: 1;
 }
 
-.event-item.warning {
-  border-color: rgba(245, 158, 11, 0.65);
-  background: rgba(245, 158, 11, 0.08);
+.event-ico.ico-critical {
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.25);
+  color: #ef4444;
 }
 
-.event-top {
+.event-ico.ico-warning {
+  background: rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.25);
+  color: #f59e0b;
+}
+
+.event-mid {
+  min-width: 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
+  flex-direction: column;
+  gap: 6px;
 }
 
-.event-id {
+.event-row1 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.event-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.18);
+  color: #e2e8f0;
+  max-width: 100%;
+  white-space: nowrap;
+}
+
+.event-badge.badge-critical {
+  color: #fca5a5;
+  border-color: rgba(239, 68, 68, 0.28);
+  background: rgba(239, 68, 68, 0.14);
+}
+
+.event-badge.badge-warning {
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.28);
+  background: rgba(245, 158, 11, 0.14);
+}
+
+.event-track {
   font-size: 11px;
-  color: #94a3b8;
+  color: #cbd5e1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  opacity: 0.9;
+}
+
+.event-row2 {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+
+.event-zone-prefix {
+  font-size: 11px;
+  color: #9dabb9;
+}
+
+.event-zone-name {
+  font-size: 12px;
+  color: #e2e8f0;
+  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .event-time {
-  font-size: 11px;
-  color: #9ca3af;
-}
-
-.event-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.event-target {
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 800;
   color: #e2e8f0;
-  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  padding-left: 10px;
 }
 
-.event-sev {
-  font-size: 11px;
-  text-transform: uppercase;
-  color: #cbd5e1;
-  padding: 2px 6px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(0, 0, 0, 0.15);
+.event-card.sev-critical .event-time {
+  color: #fecaca;
+}
+
+.event-card.sev-warning .event-time {
+  color: #fde68a;
 }
 
 .events-footer {
