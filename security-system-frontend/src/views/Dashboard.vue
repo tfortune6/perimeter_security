@@ -19,6 +19,16 @@ const videoUrl = ref('')
 let objectUrl = null // 统一 File/Blob URL 释放
 
 const zones = ref([])
+const zoneNameById = computed(() => {
+  const map = Object.create(null)
+  const list = Array.isArray(zones.value) ? zones.value : []
+  for (const z of list) {
+    const id = z?.id ?? z?.zone_id ?? z?.zoneId
+    const name = z?.name ?? z?.zone_name ?? z?.zoneName
+    if (id != null && name) map[String(id)] = String(name)
+  }
+  return map
+})
 const loadingZones = ref(false)
 
 const sources = ref([])
@@ -111,6 +121,7 @@ const fetchZones = async () => {
     // axios interceptor 已解包，resp 直接是数组
     zones.value = Array.isArray(resp) ? resp : resp?.data || []
     console.log('[fetchZones] loaded zones count:', zones.value.length)
+    window.__zones = zones.value // 调试用，可删除
   } catch (e) {
     console.error('[fetchZones] error:', e)
     zones.value = []
@@ -436,10 +447,13 @@ const startRenderLoop = () => {
 
             if (isAlarmObj && objType.includes(evType)) {
               enrichedEv.trackId = obj.id
-              // 尝试关联区域名称
-              if (obj.zone_id && zones.value.length) {
-                const zone = zones.value.find(z => z.id === obj.zone_id)
-                if (zone) enrichedEv.zoneName = zone.name
+              // 尝试关联区域名称（优先取 overlay 自带的 zoneName，其次用 zoneId 映射）
+              const zoneId = obj?.zone_id ?? obj?.zoneId ?? obj?.zone
+              const zoneName = obj?.zone_name ?? obj?.zoneName
+              if (zoneName) {
+                enrichedEv.zoneName = String(zoneName)
+              } else if (zoneId != null) {
+                enrichedEv.zoneName = zoneNameById.value[String(zoneId)]
               }
               break // 找到一个就跳出
             }

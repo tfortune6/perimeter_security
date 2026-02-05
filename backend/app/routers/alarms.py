@@ -68,6 +68,24 @@ def list_alarms(
     }
 
 
+@router.get("/alarms/unread/count")
+def get_unread_alarms_count(db: Session = Depends(get_sqlmodel_db)):
+    stmt = select(AlarmEvent).where(AlarmEvent.is_read == False)
+    count = len(db.exec(stmt).all())
+    return {"code": 0, "message": "ok", "data": {"count": count}}
+
+
+@router.post("/alarms/mark-all-read")
+def mark_all_alarms_read(db: Session = Depends(get_sqlmodel_db)):
+    stmt = select(AlarmEvent).where(AlarmEvent.is_read == False)
+    unread = db.exec(stmt).all()
+    for a in unread:
+        a.is_read = True
+        db.add(a)
+    db.commit()
+    return {"code": 0, "message": "ok", "data": {"updated": len(unread)}}
+
+
 @router.get("/alarms/{alarm_id}")
 def get_alarm_detail(alarm_id: str, db: Session = Depends(get_sqlmodel_db)):
     cleaned = alarm_id.replace("#", "")

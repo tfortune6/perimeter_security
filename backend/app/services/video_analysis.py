@@ -199,13 +199,20 @@ def compute_alarms(
     fps = float(raw.get("fps") or 0)
     tracks = raw.get("tracks") or []
 
-    # zones 归一化 -> 像素 polygon
+    # zones 归一化 -> 像素 polygon（保留 id/name 便于输出 zoneName）
     zone_polys: List[Dict[str, Any]] = []
     for z in zones or []:
         pts = z.get("points") or []
         poly = [(float(p[0]) * width, float(p[1]) * height) for p in pts]
         if len(poly) >= 3:
-            zone_polys.append({"type": z.get("type"), "polygon": poly})
+            zone_polys.append(
+                {
+                    "id": z.get("id") or z.get("zone_id") or z.get("zoneId"),
+                    "name": z.get("name") or z.get("zone_name") or z.get("zoneName"),
+                    "type": z.get("type"),
+                    "polygon": poly,
+                }
+            )
 
     # 去抖动与冷却机制参数
     DEBOUNCE_FRAMES = 10  # 连续 N 帧在区内才确认入侵
@@ -246,14 +253,20 @@ def compute_alarms(
             # 判断所在区域（core 优先于 warning）
             in_core_now = False
             in_warning_now = False
+            hit_zone_id = None
+            hit_zone_name = None
             for zone in zone_polys:
                 if not point_in_polygon(foot_pt, zone["polygon"]):
                     continue
                 if zone.get("type") == "core":
                     in_core_now = True
+                    hit_zone_id = zone.get("id")
+                    hit_zone_name = zone.get("name")
                     break
                 if zone.get("type") == "warning":
                     in_warning_now = True
+                    hit_zone_id = zone.get("id")
+                    hit_zone_name = zone.get("name")
 
             if in_core_now:
                 alarm_level = "CRITICAL"
@@ -272,6 +285,8 @@ def compute_alarms(
                     "box_norm": box_norm,
                     "alarm_level": alarm_level,
                     "color": color,
+                    "zone_id": hit_zone_id,
+                    "zoneName": hit_zone_name,
                 }
             )
 

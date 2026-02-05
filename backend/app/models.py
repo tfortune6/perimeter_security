@@ -101,6 +101,9 @@ class AlarmEvent(SQLModel, table=True):
 
     snapshot_path: str
 
+    # 新增：是否已读（用于侧边栏 badge）
+    is_read: bool = Field(default=False, index=True)
+
     video: Mapped[Optional["VideoSource"]] = Relationship(
         back_populates="alarms",
         sa_relationship=relationship("VideoSource", back_populates="alarms"),

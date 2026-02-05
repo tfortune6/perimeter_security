@@ -1,8 +1,9 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessageBox } from 'element-plus'
 import { Camera, Clock, HomeFilled, Setting, UserFilled } from '@element-plus/icons-vue'
+import { getUnreadAlarmCount, markAllAlarmsRead } from '../../api/history'
 
 const props = defineProps({
   title: { type: String, default: '智能周界安全平台' },
@@ -19,6 +20,22 @@ const dateText = ref('')
 let timer = null
 
 const active = computed(() => route.path)
+
+const unreadAlarmCount = ref(0)
+const badgeText = computed(() => {
+  const n = Number(unreadAlarmCount.value || 0)
+  if (n <= 0) return ''
+  return n > 9 ? '9+' : String(n)
+})
+
+const refreshUnreadCount = async () => {
+  try {
+    const resp = await getUnreadAlarmCount()
+    unreadAlarmCount.value = Number(resp?.count ?? resp?.data?.count ?? 0)
+  } catch {
+    // ignore
+  }
+}
 
 const menu = [
   { path: '/', label: '仪表盘 (Dashboard)', icon: HomeFilled },
@@ -38,14 +55,24 @@ const updateClock = () => {
 onMounted(() => {
   updateClock()
   timer = setInterval(updateClock, 1000)
+  refreshUnreadCount()
 })
 
 onBeforeUnmount(() => {
   if (timer) clearInterval(timer)
 })
 
-const go = (path) => {
-  router.push(path)
+const go = async (path) => {
+  await router.push(path)
+  // 进入报警记录页时，标记所有告警为已读
+  if (path === '/history') {
+    try {
+      await markAllAlarmsRead()
+      unreadAlarmCount.value = 0
+    } catch {
+      // ignore
+    }
+  }
 }
 
 const logout = async () => {
@@ -107,7 +134,7 @@ const logout = async () => {
               <el-icon size="18"><component :is="item.icon" /></el-icon>
             </div>
             <div class="nav-label">{{ item.label }}</div>
-            <div v-if="item.path === '/history' && active !== '/history'" class="badge">9+</div>
+            <div v-if="item.path === '/history' && active !== '/history' && badgeText" class="badge">{{ badgeText }}</div>
           </div>
         </div>
 

@@ -254,7 +254,10 @@ def save_config(sourceId: Optional[str] = None, db: Session = Depends(get_sqlmod
         raise HTTPException(status_code=400, detail="该视频尚未完成特征提取，请稍后再试")
 
     zones = db.exec(select(Zone).where(Zone.source_id == source_uuid)).all()
-    zones_payload = [{"type": z.type, "points": z.polygon_points} for z in zones]
+    zones_payload = [
+        {"id": z.id, "name": z.name, "type": z.type, "points": z.polygon_points}
+        for z in zones
+    ]
 
     from app.models import AlarmEvent, ObjectType, ThreatLevel
     from app.core.database import sync_engine
