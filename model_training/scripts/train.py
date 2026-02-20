@@ -165,21 +165,21 @@ def main() -> int:
         # 如果找不到 last.pt，则按普通微调逻辑走（加载 best.pt）
         prev_best = root / "model_training" / "runs" / "detect" / "detect_train" / "weights" / "best.pt"
         base_weights = str(prev_best) if prev_best.exists() else "yolov8n.pt"
-        
-        train_args = dict(
-            data=str(dataset_yaml),
+
+    train_args = dict(
+        data=str(dataset_yaml),
             epochs=20,
-            imgsz=640,
-            device=0,
-            amp=True,
-            batch=16,
+        imgsz=640,
+        device=0,
+        amp=True,
+        batch=16,
             workers=4,  # 降低 workers 减少内存/虚拟内存压力
-            plots=True,
+        plots=True,
             project=str(root / "model_training" / "runs"),
             name="detect_refine_neg",
-            exist_ok=True,
-            verbose=True,
-        )
+        exist_ok=True,
+        verbose=True,
+    )
 
     logger.info("训练参数：%s", train_args)
 

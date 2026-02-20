@@ -81,9 +81,9 @@ def main() -> int:
 
         # 2) 旧/其他版本：metrics.map50, metrics.map
         if map50 is None:
-            map50 = getattr(metrics, "map50", None)
+        map50 = getattr(metrics, "map50", None)
         if map5095 is None:
-            map5095 = getattr(metrics, "map", None)
+        map5095 = getattr(metrics, "map", None)
 
         # 3) 兜底：把对象转为 dict 再取值（某些版本提供 results_dict）
         if (map50 is None or map5095 is None) and hasattr(metrics, "results_dict"):
