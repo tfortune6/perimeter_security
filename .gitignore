@@ -1,20 +1,75 @@
-# 1. 忽略虚拟环境
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtualenv
 venv/
 .venv/
+ENV/
+env/
 
-# 2. 忽略 Python 缓存
-__pycache__/
-*.pyc
+# C extensions
+*.so
 
-# 3. 忽略 IDE 配置
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Unit test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# --- Node / Frontend ---
+node_modules/
+security-system-frontend/node_modules/
+
+# Vite / build outputs
+security-system-frontend/dist/
+
+# --- IDE / OS ---
 .vscode/
 .idea/
+.DS_Store
+Thumbs.db
 
-# 4. 【关键修正】忽略根目录下的 static/uploads 里的所有文件
+# --- Project generated artifacts ---
+# Uploaded videos (runtime data)
 static/uploads/*
-
-# 5. 【关键修正】但是保留 .gitkeep 文件（防止空文件夹被 Git 丢弃）
 !static/uploads/.gitkeep
 
-# 6. 忽略环境变量
+# Video analysis outputs
+analysis_results/
+
+# Dataset (large) - do NOT commit raw images/labels
+model_training/data/images/
+model_training/data/labels/
+model_training/video
+# Keep dataset YAML and helper scripts
+!model_training/data/perim_data.yaml
+!model_training/data/images/split_by_scene.py
+!model_training/data/labels/clean_yolo_labels.py
+
+# Ultralytics / YOLO training runs
+runs/
+model_training/runs/
+
+# Weights (large binaries) - do NOT commit training outputs
+*.pt
+!model_training/weights/yolov8n.pt
+
+# Local env files
 .env
+.env.*
+
+# Logs
+*.log
+
+# Cursor
+.cursor/

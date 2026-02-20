@@ -1,0 +1,12 @@
+# 周界安防数据集配置（YOLOv8/Ultralytics）
+# 目录结构约定：
+# model_training/data/images/train|val
+# model_training/data/labels/train|val
+
+# 使用绝对路径，避免 Ultralytics 在不同启动目录下解析相对路径导致跑偏
+path: E:/xiangmu2/securty-system/perimeter_security/model_training/data
+train: images/train
+val: images/val
+
+nc: 2
+names: ['person', 'vehicle']

@@ -239,10 +239,25 @@ const fetchOverlays = async () => {
 
     // 兼容后端返回 {code:0, data:{overlays:[...]}} 结构
     // axios interceptor 已解包，所以 resp 直接是 {overlays:[...]}
-    const overlays = resp?.overlays || resp?.frames || resp?.data?.overlays || resp?.data?.frames || []
+    let overlays = resp?.overlays || resp?.frames || resp?.data?.overlays || resp?.data?.frames || []
+
+    // 修复：清洗/排序 timestamp，避免前几秒 timestamp=0/NaN 导致二分查找匹配失败
+    overlays = Array.isArray(overlays) ? overlays : []
+    overlays = overlays
+      .map((f) => {
+        const ts = Number(f?.timestamp)
+        return { ...f, __ts: Number.isFinite(ts) ? ts : null }
+      })
+      .filter((f) => f.__ts !== null)
+      .sort((a, b) => a.__ts - b.__ts)
+      .map(({ __ts, ...rest }) => rest)
+
     overlayFrames.value = overlays
-    overlayTimestamps.value = overlays.map((f) => Number(f.timestamp || 0))
+    overlayTimestamps.value = overlays.map((f) => Number(f.timestamp))
     overlayData.value = resp
+
+    // 调试：打印前10个时间戳，确认从 0 开始递增
+    console.log('[fetchOverlays] first10 timestamps:', overlayTimestamps.value.slice(0, 10))
 
     // 调试：暴露到 window
     window.__overlayFrames = overlays

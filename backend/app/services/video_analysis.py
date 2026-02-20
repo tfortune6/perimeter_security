@@ -53,11 +53,28 @@ def analyze_video(video_path: str, video_id: str) -> Dict[str, Any]:
     - 不写入 AlarmEvent 表
     """
 
-    # 加载 YOLOv8 模型
+    # 加载 YOLOv8 模型（使用绝对路径，避免受启动目录 cwd 影响）
     try:
+        from pathlib import Path
+
         from ultralytics import YOLO
 
-        model = YOLO("yolov8n.pt")
+        # 使用项目内训练好的 best.pt 作为推理权重
+        weights_path = Path(__file__).resolve().parent.parent / "models" / "best.pt"
+        if not weights_path.exists():
+            raise FileNotFoundError(
+                f"YOLO 权重文件不存在: {weights_path}。请将训练好的 best.pt 放到 backend/app/models/ 目录下。"
+            )
+
+        model = YOLO(str(weights_path))
+
+        # 打印当前加载的权重与类别映射，便于确认线上实际使用的模型
+        # 注意：names 由权重内的训练配置决定（你的数据集应为 ['person', 'vehicle']）
+        try:
+            print(f"[YOLO] weights={weights_path.resolve()}")
+            print(f"[YOLO] names={getattr(model, 'names', None)}")
+        except Exception:
+            pass
     except Exception as e:
         raise RuntimeError(f"加载 YOLO 模型失败: {e}")
 
@@ -104,8 +121,9 @@ def analyze_video(video_path: str, video_id: str) -> Dict[str, Any]:
             for i in range(len(boxes)):
                 cls = int(clss[i])
 
-                # 只保留 Person (0) 和 Vehicle (2)
-                if cls not in (0, 2):
+                # 只保留 Person (0) 和 Vehicle (1)
+                # 说明：本项目训练数据集为 2 类（person=0, vehicle=1），不是 COCO 80 类索引
+                if cls not in (0, 1):
                     continue
 
                 xyxy = xyxys[i].tolist()
@@ -219,7 +237,7 @@ def compute_alarms(
     COOLDOWN_SECONDS = 5.0  # 冷却期（秒）
 
     # 黄色警戒区逗留阈值：连续停留超过该时间才触发（防路人穿越误报）
-    WARNING_LOITER_SECONDS = 5.0
+    WARNING_LOITER_SECONDS = 3.5
 
     # 追踪每个目标的状态（基于临时 id）
     # key: object_id -> {
@@ -297,11 +315,11 @@ def compute_alarms(
                     {
                         "in_core": False,
                         "core_consecutive": 0,
-                        "last_core_alarm_ts": -1.0,
+                        "last_core_alarm_ts": -999.0,
                         "warning_enter_ts": None,
                         "warning_last_seen_ts": None,
                         "warning_triggered": False,
-                        "last_warning_alarm_ts": -1.0,
+                        "last_warning_alarm_ts": -999.0,
                     },
                 )
 
